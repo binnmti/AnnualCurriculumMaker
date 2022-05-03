@@ -4,7 +4,7 @@ public class Curriculum
 {
     public int Rows { get; }
     public int Cols { get; }
-    private List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
+    public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
 
     public CurriculumCell this[int row, int col]
     {
@@ -20,7 +20,7 @@ public class Curriculum
         {
             for (int j = 0; j < Cols; j++)
             {
-                Cells.Add(new CurriculumCell("", new List<string>()));
+                Cells.Add(new CurriculumCell(new Lesson(), new List<string>()));
             }
         }
     }
@@ -28,9 +28,9 @@ public class Curriculum
 
 public class CurriculumCell
 {
-    public string Lesson { get; set; } = "";
+    public Lesson Lesson { get; set; }
     public List<string> Teachers { get; set; } = new List<string>();
-    public CurriculumCell(string lesson, List<string> teachers)
+    public CurriculumCell(Lesson lesson, List<string> teachers)
     {
         Lesson = lesson;
         Teachers = teachers;
@@ -39,7 +39,7 @@ public class CurriculumCell
 
 public static class CheckCurriculumCell
 {
-    public static CurriculumCell ConvertCell(string cell)
+    public static CurriculumCell ConvertCell(string cell, string quarter, string week, string year, string period)
     {
         string lesson;
         List<string> teachers = new();
@@ -55,6 +55,6 @@ public static class CheckCurriculumCell
         {
             lesson = cell;
         }
-        return new CurriculumCell(lesson, teachers);
+        return new CurriculumCell(new Lesson(lesson, quarter, week, year, period), teachers);
     }
 }

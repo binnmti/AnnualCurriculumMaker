@@ -1,19 +1,26 @@
 ﻿namespace Model;
 
-internal class Teacher
+public static class TeacherConvert
 {
-    public string Name { get; private set; } = "";
-    public List<string> Lessons { get; private set; } = new List<string>();
-}
-
-
-
-internal static class TeacherConvert
-{
-    //internal static Teacher ToTeacher(this Curriculum Curriculum)
-    //{
-    //    var teachers = Curriculum.Cell.GroupBy(x => x.Teachers);
-    //}
+    public static Dictionary<string, List<Lesson>> ToTeacher(this Curriculum Curriculum)
+    {
+        Dictionary<string, List<Lesson>> teacherList = new();
+        foreach (var cell in Curriculum.Cells)
+        {
+            foreach (var teacher in cell.Teachers)
+            {
+                if (teacherList.ContainsKey(teacher))
+                {
+                    teacherList[teacher].Add(cell.Lesson);
+                }
+                else
+                {
+                    teacherList.Add(teacher, new List<Lesson>() { cell.Lesson });
+                }
+            }
+        }
+        return teacherList;
+    }
 
     //
     //internal static bool Check(this Curriculum Curriculum)
