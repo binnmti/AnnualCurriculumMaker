@@ -32,10 +32,10 @@
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("坂本");
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +50,7 @@
             this.dataGridView1.RowTemplate.Height = 33;
             this.dataGridView1.Size = new System.Drawing.Size(1306, 475);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // panel1
             // 
@@ -61,6 +62,22 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1306, 389);
             this.panel1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(616, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "label1";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(681, 17);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(150, 31);
+            this.textBox1.TabIndex = 1;
             // 
             // listView1
             // 
@@ -85,22 +102,6 @@
             // 
             this.columnHeader1.Text = "名前";
             this.columnHeader1.Width = 200;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(681, 17);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(150, 31);
-            this.textBox1.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(616, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 25);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "label1";
             // 
             // Form1
             // 

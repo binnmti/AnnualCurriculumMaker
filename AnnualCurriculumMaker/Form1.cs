@@ -1,7 +1,12 @@
+using Model;
+
 namespace WinFormsApp2
 {
     public partial class Form1 : Form
     {
+
+        Curriculum Curriculum { get; }
+
         private  List<string> Weeks = new List<string>() { "åé", "âŒ", "êÖ", "ñÿ", "ã‡", "ìy" };
         public Form1()
         {
@@ -24,6 +29,14 @@ namespace WinFormsApp2
                     row++;
                 }
             }
+
+            Curriculum = new Curriculum(dataGridView1.RowCount, dataGridView1.ColumnCount);
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var cell = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+            Curriculum[e.ColumnIndex, e.RowIndex] = CheckCurriculumCell.ConvertCell(cell);
         }
     }
 }
