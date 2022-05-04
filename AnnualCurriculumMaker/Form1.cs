@@ -4,8 +4,11 @@ namespace WinFormsApp2
 {
     public partial class Form1 : Form
     {
+        private string FileName = "";
+        private string JsonString = "";
 
-        Curriculum Curriculum { get; }
+
+        private Curriculum Curriculum { get; set; }
 
         private  List<string> Weeks = new List<string>() { "ŒŽ", "‰Î", "…", "–Ø", "‹à", "“y" };
         public Form1()
@@ -63,6 +66,70 @@ namespace WinFormsApp2
                 item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
             }
             listView1.EndUpdate();
+        }
+
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.InitialDirectory = Application.ExecutablePath;
+            openFileDialog1.ShowDialog();
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(FileName))
+            {
+                saveFileDialog1.ShowDialog();
+            }
+            else
+            {
+                SaveFile(FileName);
+            }
+
+        }
+
+        private void NameSaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(FileName))
+            {
+                saveFileDialog1.InitialDirectory = Path.GetDirectoryName(FileName);
+                saveFileDialog1.FileName = Path.GetFileName(FileName);
+            }
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            LoadFile(openFileDialog1.FileName);
+
+        }
+
+
+        private void SaveFile(string fileName)
+        {
+            File.WriteAllText(fileName, Curriculum.ToJson(true));
+
+            FileName = fileName;
+            JsonString = Curriculum.ToJson(false);
+        }
+
+        private void LoadFile(string fileName)
+        {
+            Curriculum = CurriculumConvert.ToCurriculum(File.ReadAllText(fileName));
+            for (int i = 0; i < Curriculum.Rows; i++)
+            {
+                for (int j = 0; j < Curriculum.Cols; j++)
+                {
+                    dataGridView1[j, i].Value = Curriculum[i,j].Value;
+                }
+            }
+
+            FileName = fileName;
+            JsonString = Curriculum.ToJson(false);
+        }
+
+        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveFile(saveFileDialog1.FileName);
         }
     }
 }

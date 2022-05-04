@@ -1,7 +1,17 @@
-﻿namespace Model;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
+
+namespace Model;
 
 public static class CurriculumConvert
 {
+    public static string ToJson(this Curriculum curriculum, bool indent)
+        => JsonSerializer.Serialize(curriculum, new JsonSerializerOptions { WriteIndented = indent, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) });
+
+    public static Curriculum ToCurriculum(string json)
+        => JsonSerializer.Deserialize<Curriculum>(json) ?? new Curriculum(0, 0, new List<string>(), new List<string>());
+
     public static Dictionary<string, List<Lesson>> ToTeacher(this Curriculum curriculum)
     {
         Dictionary<string, List<Lesson>> teacherList = new();
