@@ -36,7 +36,7 @@ public static class CurriculumCellConvert
         for (int row = 0; row < curriculum.Rows; row++)
         {
             var cell = curriculum[col, row];
-            if (cell.Teachers.Any(x => x == teacherName)) return true;
+            if (cell.Teachers.Any(x => x.Trim() == teacherName.Trim())) return true;
         }
         return false;
     }

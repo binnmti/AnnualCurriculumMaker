@@ -19,13 +19,13 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CurriculumAny()
+        public void 教師重複チェック()
         {
             var curriculum = new Curriculum(10, 10);
             var lesson = new Lesson("国語", "1Q", "月曜", "１年", "2限");
             curriculum[0, 0] = new CurriculumCell(lesson, new List<string> { "坂本", "松井", });
-
-            Assert.True(curriculum.Any("坂本", 0));
+            Assert.False(curriculum.TryParse(0, "国語,坂本", "", "", "", "", out var curriculumCell));
+            Assert.False(curriculum.TryParse(0, "国語, 坂本", "", "", "", "", out var curriculumCell2));
         }
 
         [Fact]
