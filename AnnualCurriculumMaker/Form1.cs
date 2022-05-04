@@ -35,20 +35,29 @@ namespace WinFormsApp2
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var cell = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
-            CurriculumCellConvert.TryParse(Curriculum, e.ColumnIndex, cell, "", "", "", "", out var curriculumCell);
-            Curriculum[e.ColumnIndex, e.RowIndex] = curriculumCell;
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            var cell = e.FormattedValue.ToString() ?? "";
-            if (!CurriculumCellConvert.TryParse(Curriculum, e.ColumnIndex, cell, "", "", "", "", out var curriculumCell))
+            var value = e.FormattedValue.ToString() ?? "";
+            if (!Curriculum.TryParse(e.ColumnIndex, value, "", "", "", "", out var cell))
             {
                 MessageBox.Show("d•¡‚µ‚Ä‚¢‚Ü‚·I");
                 dataGridView1.CancelEdit();
                 e.Cancel = false;
+                return;
             }
+            Curriculum[e.ColumnIndex, e.RowIndex] = cell;
+
+            var teacher = Curriculum.ToTeacher();
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            foreach(var t in teacher)
+            {
+                var item = listView1.Items.Add(t.Key);
+                item.SubItems.Add(string.Join(',', t.Value.Select(x => x.Name)));
+            }
+            listView1.EndUpdate();
         }
     }
 }
