@@ -30,13 +30,25 @@ namespace WinFormsApp2
                 }
             }
 
-            Curriculum = new Curriculum(dataGridView1.RowCount, dataGridView1.ColumnCount);
+            Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount);
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var cell = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
-            Curriculum[e.ColumnIndex, e.RowIndex] = CurriculumCellConvert.Convert(cell, "","","","");
+            CurriculumCellConvert.TryParse(Curriculum, e.ColumnIndex, cell, "", "", "", "", out var curriculumCell);
+            Curriculum[e.ColumnIndex, e.RowIndex] = curriculumCell;
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            var cell = e.FormattedValue.ToString() ?? "";
+            if (!CurriculumCellConvert.TryParse(Curriculum, e.ColumnIndex, cell, "", "", "", "", out var curriculumCell))
+            {
+                MessageBox.Show("èdï°ÇµÇƒÇ¢Ç‹Ç∑ÅI");
+                dataGridView1.CancelEdit();
+                e.Cancel = false;
+            }
         }
     }
 }

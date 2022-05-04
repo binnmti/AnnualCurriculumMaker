@@ -12,7 +12,7 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
-    public Curriculum(int row, int col)
+    public Curriculum(int col, int row)
     {
         Rows = row;
         Cols = col;
