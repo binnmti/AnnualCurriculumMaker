@@ -12,7 +12,7 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
-    public Curriculum(int col, int row)
+    public Curriculum(int col, int row, List<string> colNames, List<string> rowNames)
     {
         Rows = row;
         Cols = col;
@@ -20,7 +20,7 @@ public class Curriculum
         {
             for (int j = 0; j < Cols; j++)
             {
-                Cells.Add(new CurriculumCell(new Lesson("","","","",""), new List<string>()));
+                Cells.Add(new CurriculumCell(new Lesson("", colNames[j], rowNames[i]), new List<string>()));
             }
         }
     }

@@ -2,18 +2,14 @@
 
 public class Lesson
 {
-    public Lesson(string name, string quarter, string week, string year, string period)
+    public Lesson(string name, string colName, string rowName)
     {
         Name = name;
-        Quarter = quarter;
-        Week = week;
-        Year = year;
-        Period = period;
+        ColName = colName;
+        RowName = rowName;
     }
 
     public string Name { get; } = "";
-    public string Quarter { get; } = "";
-    public string Week { get; } = "";
-    public string Year { get; } = "";
-    public string Period { get; } = "";
+    public string ColName { get; } = "";
+    public string RowName { get; } = "";
 }

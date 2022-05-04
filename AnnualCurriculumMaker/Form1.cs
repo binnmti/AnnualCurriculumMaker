@@ -30,7 +30,9 @@ namespace WinFormsApp2
                 }
             }
 
-            Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount);
+            var colNames = dataGridView1.Columns.Cast<DataGridViewColumn>().Select(x => x.HeaderText).ToList();
+            var rowNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(x => x.HeaderCell.Value.ToString() ?? "").ToList();
+            Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount, colNames, rowNames);
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -40,7 +42,10 @@ namespace WinFormsApp2
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             var value = e.FormattedValue.ToString() ?? "";
-            if (!Curriculum.TryParse(e.ColumnIndex, value, "", "", "", "", out var cell))
+
+            var colName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
+            var rowName = dataGridView1.Rows[e.RowIndex].HeaderCell.Value.ToString() ?? "";
+            if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, colName, rowName, out var cell))
             {
                 MessageBox.Show("d•¡‚µ‚Ä‚¢‚Ü‚·I");
                 dataGridView1.CancelEdit();
@@ -55,7 +60,7 @@ namespace WinFormsApp2
             foreach(var t in teacher)
             {
                 var item = listView1.Items.Add(t.Key);
-                item.SubItems.Add(string.Join(',', t.Value.Select(x => x.Name)));
+                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
             }
             listView1.EndUpdate();
         }
