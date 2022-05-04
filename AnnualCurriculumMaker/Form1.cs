@@ -18,7 +18,12 @@ namespace WinFormsApp2
             {
                 foreach(var week in Weeks)
                 {
-                    dataGridView1.Columns.Add($"", $"{q + 1}Q:{week}");
+                    var column = new DataGridViewColumn
+                    {
+                        HeaderText = $"{q + 1}Q:{week}",
+                        CellTemplate = new DataGridViewTextBoxCell()
+                    };
+                    dataGridView1.Columns.Add(column);
                 }
             }
             dataGridView1.RowCount = 4 * 6;
@@ -32,6 +37,7 @@ namespace WinFormsApp2
                     row++;
                 }
             }
+            dataGridView1.RowHeadersWidth = 150;
 
             var colNames = dataGridView1.Columns.Cast<DataGridViewColumn>().Select(x => x.HeaderText).ToList();
             var rowNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(x => x.HeaderCell.Value.ToString() ?? "").ToList();
@@ -66,6 +72,8 @@ namespace WinFormsApp2
                 item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
             }
             listView1.EndUpdate();
+
+            Text = GetTitle();
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,7 +108,6 @@ namespace WinFormsApp2
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             LoadFile(openFileDialog1.FileName);
-
         }
 
 
@@ -110,6 +117,7 @@ namespace WinFormsApp2
 
             FileName = fileName;
             JsonString = Curriculum.ToJson(false);
+            Text = GetTitle();
         }
 
         private void LoadFile(string fileName)
@@ -125,11 +133,48 @@ namespace WinFormsApp2
 
             FileName = fileName;
             JsonString = Curriculum.ToJson(false);
+            Text = GetTitle();
+        }
+
+        private string GetTitle()
+        {
+            var title = $"年間カリキュラムメーカー";
+            if (!string.IsNullOrEmpty(FileName)) title += $" - {Path.GetFileName(FileName)}";
+            if (JsonString != Curriculum.ToJson(false)) title += "*";
+            return title;
         }
 
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveFile(saveFileDialog1.FileName);
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (JsonString == Curriculum.ToJson(false)) return;
+
+            var msg = MessageBox.Show($"{Path.GetFileName(FileName)} は変更されています。閉じる前に保存しますか？", "", MessageBoxButtons.YesNoCancel);
+            if (msg == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+            else if (msg == DialogResult.Yes)
+            {
+                if (string.IsNullOrEmpty(FileName))
+                {
+                    saveFileDialog1.ShowDialog();
+                }
+                else
+                {
+                    SaveFile(FileName);
+                }
+            }
+
         }
     }
 }
