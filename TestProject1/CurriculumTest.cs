@@ -26,8 +26,8 @@ namespace TestProject1
             var curriculum = new Curriculum(10, 10, names, names);
             var lesson = new Lesson("国語", "1Q月曜", "１年2限");
             curriculum[0, 0] = new CurriculumCell(lesson, new List<string> { "坂本", "松井", });
-            Assert.False(curriculum.TryParse(0, 1, "国語,坂本", "", "", out var curriculumCell));
-            Assert.False(curriculum.TryParse(0, 2, "国語, 坂本", "", "",out var curriculumCell2));
+            Assert.False(curriculum.TryParse(0, 1, "国語,坂本", out var curriculumCell));
+            Assert.False(curriculum.TryParse(0, 2, "国語, 坂本", out var curriculumCell2));
         }
 
         [Fact]

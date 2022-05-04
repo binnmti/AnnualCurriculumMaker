@@ -7,7 +7,6 @@ namespace WinFormsApp2
         private string FileName = "";
         private string JsonString = "";
 
-
         private Curriculum Curriculum { get; set; }
 
         private  List<string> Weeks = new List<string>() { "ŒŽ", "‰Î", "…", "–Ø", "‹à", "“y" };
@@ -44,17 +43,25 @@ namespace WinFormsApp2
             Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount, colNames, rowNames);
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void UpdateListView()
         {
+            var teacher = Curriculum.ToTeacher();
+            listView1.BeginUpdate();
+            listView1.Items.Clear();
+            foreach (var t in teacher)
+            {
+                var item = listView1.Items.Add(t.Key);
+                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
+            }
+            listView1.EndUpdate();
+            Text = GetTitle();
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             var value = e.FormattedValue.ToString() ?? "";
 
-            var colName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
-            var rowName = dataGridView1.Rows[e.RowIndex].HeaderCell.Value.ToString() ?? "";
-            if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, colName, rowName, out var cell))
+            if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
             {
                 MessageBox.Show("d•¡‚µ‚Ä‚¢‚Ü‚·I");
                 dataGridView1.CancelEdit();
@@ -62,18 +69,7 @@ namespace WinFormsApp2
                 return;
             }
             Curriculum[e.ColumnIndex, e.RowIndex] = cell;
-
-            var teacher = Curriculum.ToTeacher();
-            listView1.BeginUpdate();
-            listView1.Items.Clear();
-            foreach(var t in teacher)
-            {
-                var item = listView1.Items.Add(t.Key);
-                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
-            }
-            listView1.EndUpdate();
-
-            Text = GetTitle();
+            UpdateListView();
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -109,7 +105,6 @@ namespace WinFormsApp2
         {
             LoadFile(openFileDialog1.FileName);
         }
-
 
         private void SaveFile(string fileName)
         {
@@ -174,7 +169,18 @@ namespace WinFormsApp2
                     SaveFile(FileName);
                 }
             }
+        }
 
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
+                Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
+
+                cell.Value = "";
+            }
+            UpdateListView();
         }
     }
 }

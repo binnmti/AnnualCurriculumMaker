@@ -16,6 +16,9 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
+    public string GetColName(int col) => ColNames[col];
+    public string GetRowName(int row) => RowNames[row];
+
     public Curriculum(int cols, int rows, List<string> colNames, List<string> rowNames) : this(cols, rows, colNames, rowNames, GetCells(cols, rows, colNames, rowNames))
     {
     }

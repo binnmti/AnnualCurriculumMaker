@@ -32,10 +32,12 @@ public static class CurriculumConvert
         return teacherList;
     }
 
-    public static bool TryParse(this Curriculum curriculum, int col, int row, string cell, string colName, string rowName, out CurriculumCell curriculumCell)
+    public static bool TryParse(this Curriculum curriculum, int col, int row, string cell, out CurriculumCell curriculumCell)
     {
         string lesson;
         List<string> teachers = new();
+        var colName = curriculum.GetColName(col);
+        var rowName = curriculum.GetRowName(row);
 
         //,でつないでいる
         if (cell.Contains(','))
