@@ -16,19 +16,8 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
-    public Curriculum(int cols, int rows, List<string> colNames, List<string> rowNames)
+    public Curriculum(int cols, int rows, List<string> colNames, List<string> rowNames) : this(cols, rows, colNames, rowNames, GetCells(cols, rows, colNames, rowNames))
     {
-        Cols = cols;
-        Rows = rows;
-        ColNames = colNames;
-        RowNames = rowNames;
-        for (int i = 0; i < Rows; i++)
-        {
-            for (int j = 0; j < Cols; j++)
-            {
-                Cells.Add(new CurriculumCell(new Lesson("", colNames[j], rowNames[i]), new List<string>()));
-            }
-        }
     }
 
     [JsonConstructor]
@@ -40,27 +29,17 @@ public class Curriculum
         RowNames = rowNames;
         Cells = cells;
     }
+
+    private static List<CurriculumCell> GetCells(int cols, int rows, List<string> colNames, List<string> rowNames)
+    {
+        List<CurriculumCell> cells = new();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                cells.Add(new CurriculumCell(new Lesson("", colNames[j], rowNames[i]), new List<string>()));
+            }
+        }
+        return cells;
+    }
 }
-
-
-
-
-//public class Rootobject
-//{
-//    public int Rows { get; set; }
-//    public int Cols { get; set; }
-//    public Cell[] Cells { get; set; }
-//}
-
-//public class Cell
-//{
-//    public Lesson Lesson { get; set; }
-//    public string[] Teachers { get; set; }
-//}
-
-//public class Lesson
-//{
-//    public string Name { get; set; }
-//    public string ColName { get; set; }
-//    public string RowName { get; set; }
-//}
