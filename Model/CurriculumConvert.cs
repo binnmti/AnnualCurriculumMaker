@@ -1,6 +1,6 @@
 ﻿namespace Model;
 
-public static class TeacherConvert
+public static class CurriculumConvert
 {
     public static Dictionary<string, List<Lesson>> ToTeacher(this Curriculum Curriculum)
     {

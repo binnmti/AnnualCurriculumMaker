@@ -36,7 +36,7 @@ namespace WinFormsApp2
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var cell = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
-            //Curriculum[e.ColumnIndex, e.RowIndex] = CheckCurriculumCell.ConvertCell(cell);
+            Curriculum[e.ColumnIndex, e.RowIndex] = CurriculumCellConvert.Convert(cell, "","","","");
         }
     }
 }

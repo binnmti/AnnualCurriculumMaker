@@ -2,9 +2,6 @@
 
 public class Lesson
 {
-    public Lesson()
-    { }
-
     public Lesson(string name, string quarter, string week, string year, string period)
     {
         Name = name;
@@ -14,11 +11,9 @@ public class Lesson
         Period = period;
     }
 
-    public string Name { get; private set; } = "";
-    public string Quarter { get; private set; } = "";
-    public string Week { get; private set; } = "";
-    public string Year { get; private set; } = "";
-    public string Period { get; private set; } = "";
+    public string Name { get; } = "";
+    public string Quarter { get; } = "";
+    public string Week { get; } = "";
+    public string Year { get; } = "";
+    public string Period { get; } = "";
 }
-
-
