@@ -4,7 +4,7 @@ public class Curriculum
 {
     public int Rows { get; }
     public int Cols { get; }
-    public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
+    public IList<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
 
     public CurriculumCell this[int row, int col]
     {

@@ -19,7 +19,17 @@ namespace TestProject1
         }
 
         [Fact]
-        public void Curriculumをテスト2()
+        public void CurriculumAny()
+        {
+            var curriculum = new Curriculum(10, 10);
+            var lesson = new Lesson("国語", "1Q", "月曜", "１年", "2限");
+            curriculum[0, 0] = new CurriculumCell(lesson, new List<string> { "坂本", "松井", });
+
+            Assert.True(curriculum.Any("坂本", 0));
+        }
+
+        [Fact]
+        public void CurriculumをTeacherに変換()
         {
             var curriculum = new Curriculum(10, 10);
             var 国語 = new Lesson("国語", "1Q", "月曜", "１年", "2限");
