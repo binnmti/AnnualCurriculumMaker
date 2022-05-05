@@ -6,6 +6,7 @@ namespace WinFormsApp2
     {
         private string FileName = "";
         private string JsonString = "";
+        private string CellBeginText = "";
 
         private Curriculum Curriculum { get; set; }
 
@@ -57,14 +58,19 @@ namespace WinFormsApp2
             Text = GetTitle();
         }
 
-        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            var value = e.FormattedValue.ToString() ?? "";
+            CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString() ?? "";
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString() ?? "";
+            if (CellBeginText == value) return;
 
             if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
             {
                 MessageBox.Show("重複しています！");
-                e.Cancel = false;
                 return;
             }
             Curriculum[e.ColumnIndex, e.RowIndex] = cell;
@@ -123,6 +129,7 @@ namespace WinFormsApp2
                     dataGridView1[i, j].Value = Curriculum[i, j].Value;
                 }
             }
+            UpdateListView();
 
             FileName = fileName;
             JsonString = Curriculum.ToJson(false);
@@ -186,6 +193,7 @@ namespace WinFormsApp2
 
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
 
             Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
@@ -194,6 +202,7 @@ namespace WinFormsApp2
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
 
             Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
@@ -201,13 +210,16 @@ namespace WinFormsApp2
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.IsCurrentCellInEditMode) return;
             string s = Clipboard.GetText();
             SetSelectCellText(s);
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.IsCurrentCellInEditMode) return;
             SetSelectCellText("");
         }
+
     }
 }
