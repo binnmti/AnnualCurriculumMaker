@@ -1,5 +1,6 @@
 using Model;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace TestProject1
@@ -44,15 +45,13 @@ namespace TestProject1
             curriculum[0, 2] = new CurriculumCell(—‰È, new List<string> { "¼ˆä", });
             curriculum[0, 3] = new CurriculumCell(Ğ‰ï, new List<string> { "¼ˆä", });
 
-            var teacher = curriculum.ToTeacher();
-            var lessonsSakamoto = teacher["â–{"];
-            Assert.Equal("‘Œê", lessonsSakamoto[0].Name);
+            var teacher = curriculum.ToTeachers().ToList();
+            Assert.Equal("‘Œê", teacher[0].Lessons[0].Name);
 
-            var lessonMatsui = teacher["¼ˆä"];
-            Assert.Equal("‘Œê", lessonMatsui[0].Name);
-            Assert.Equal("Z”", lessonMatsui[1].Name);
-            Assert.Equal("—‰È", lessonMatsui[2].Name);
-            Assert.Equal("Ğ‰ï", lessonMatsui[3].Name);
+            Assert.Equal("‘Œê", teacher[1].Lessons[0].Name);
+            Assert.Equal("Z”", teacher[1].Lessons[1].Name);
+            Assert.Equal("—‰È", teacher[1].Lessons[2].Name);
+            Assert.Equal("Ğ‰ï", teacher[1].Lessons[3].Name);
         }
     }
 }

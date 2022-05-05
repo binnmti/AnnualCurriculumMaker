@@ -12,7 +12,7 @@ public static class CurriculumConvert
     public static Curriculum ToCurriculum(string json)
         => JsonSerializer.Deserialize<Curriculum>(json) ?? new Curriculum(0, 0, new List<string>(), new List<string>());
 
-    public static Dictionary<string, List<Lesson>> ToTeacher(this Curriculum curriculum)
+    public static IEnumerable<Teacher> ToTeachers(this Curriculum curriculum)
     {
         Dictionary<string, List<Lesson>> teacherList = new();
         foreach (var cell in curriculum.Cells)
@@ -29,7 +29,7 @@ public static class CurriculumConvert
                 }
             }
         }
-        return teacherList;
+        return teacherList.Select(x => new Teacher(x.Key, x.Value));
     }
 
     public static bool TryParse(this Curriculum curriculum, int col, int row, string cell, out CurriculumCell curriculumCell)

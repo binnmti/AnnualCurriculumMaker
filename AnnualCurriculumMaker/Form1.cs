@@ -45,13 +45,13 @@ namespace WinFormsApp2
 
         private void UpdateListView()
         {
-            var teacher = Curriculum.ToTeacher();
+            var teachers = Curriculum.ToTeachers();
             listView1.BeginUpdate();
             listView1.Items.Clear();
-            foreach (var t in teacher)
+            foreach (var teacher in teachers)
             {
-                var item = listView1.Items.Add(t.Key);
-                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColTitle}][{x.RowTitle}]")));
+                var item = listView1.Items.Add(teacher.Name);
+                item.SubItems.Add(string.Join(',', teacher.Lessons.Select(l => $"{l.Name}:[{l.ColTitle}][{l.RowTitle}]")));
             }
             listView1.EndUpdate();
             Text = GetTitle();
@@ -122,7 +122,7 @@ namespace WinFormsApp2
             {
                 for (int j = 0; j < Curriculum.Cols; j++)
                 {
-                    dataGridView1[j, i].Value = Curriculum[i,j].Value;
+                    dataGridView1[i, j].Value = Curriculum[i, j].Value;
                 }
             }
 

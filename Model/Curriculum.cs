@@ -4,8 +4,8 @@ namespace Model;
 
 public class Curriculum
 {
-    public int Rows { get; }
     public int Cols { get; }
+    public int Rows { get; }
     public List<string> ColTitles { get; }
     public List<string> RowTitles { get; }
     public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
