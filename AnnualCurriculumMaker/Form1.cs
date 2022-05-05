@@ -64,7 +64,6 @@ namespace WinFormsApp2
             if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
             {
                 MessageBox.Show("重複しています！");
-                dataGridView1.CancelEdit();
                 e.Cancel = false;
                 return;
             }
@@ -88,7 +87,6 @@ namespace WinFormsApp2
             {
                 SaveFile(FileName);
             }
-
         }
 
         private void NameSaveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -171,16 +169,45 @@ namespace WinFormsApp2
             }
         }
 
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetSelectCellText(string text)
         {
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
-                Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
+                if (!Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, text, out var curriculumCell))
+                {
+                    MessageBox.Show("重複しています！");
+                    return;
+                }
                 Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
-
-                cell.Value = "";
+                cell.Value = text;
             }
             UpdateListView();
+        }
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
+
+            Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
+            SetSelectCellText("");
+        }
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
+
+            Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
+        }
+
+        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string s = Clipboard.GetText();
+            SetSelectCellText(s);
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetSelectCellText("");
         }
     }
 }
