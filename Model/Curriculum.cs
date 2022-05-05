@@ -6,9 +6,23 @@ public class Curriculum
 {
     public int Rows { get; }
     public int Cols { get; }
-    public List<string> ColNames { get; }
-    public List<string> RowNames { get; }
+    public List<string> ColTitles { get; }
+    public List<string> RowTitles { get; }
     public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
+
+    public Curriculum(int cols, int rows, List<string> colTitles, List<string> rowTitles) : this(cols, rows, colTitles, rowTitles, GetCells(cols, rows, colTitles, rowTitles))
+    {
+    }
+
+    [JsonConstructor]
+    public Curriculum(int cols, int rows, List<string> colTitles, List<string> rowTitles, List<CurriculumCell> cells)
+    {
+        Cols = cols;
+        Rows = rows;
+        ColTitles = colTitles;
+        RowTitles = rowTitles;
+        Cells = cells;
+    }
 
     public CurriculumCell this[int row, int col]
     {
@@ -16,31 +30,17 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
-    public string GetColName(int col) => ColNames[col];
-    public string GetRowName(int row) => RowNames[row];
+    public string GetColTitle(int col) => ColTitles[col];
+    public string GetRowTitle(int row) => RowTitles[row];
 
-    public Curriculum(int cols, int rows, List<string> colNames, List<string> rowNames) : this(cols, rows, colNames, rowNames, GetCells(cols, rows, colNames, rowNames))
-    {
-    }
-
-    [JsonConstructor]
-    public Curriculum(int cols, int rows, List<string> colNames, List<string> rowNames, List<CurriculumCell> cells)
-    {
-        Cols = cols;
-        Rows = rows;
-        ColNames = colNames;
-        RowNames = rowNames;
-        Cells = cells;
-    }
-
-    private static List<CurriculumCell> GetCells(int cols, int rows, List<string> colNames, List<string> rowNames)
+    private static List<CurriculumCell> GetCells(int cols, int rows, List<string> colTitles, List<string> rowTitles)
     {
         List<CurriculumCell> cells = new();
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                cells.Add(new CurriculumCell(new Lesson("", colNames[j], rowNames[i]), new List<string>()));
+                cells.Add(new CurriculumCell(new Lesson("", colTitles[j], rowTitles[i]), new List<string>()));
             }
         }
         return cells;

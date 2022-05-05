@@ -36,8 +36,8 @@ public static class CurriculumConvert
     {
         string lesson;
         List<string> teachers = new();
-        var colName = curriculum.GetColName(col);
-        var rowName = curriculum.GetRowName(row);
+        var colName = curriculum.GetColTitle(col);
+        var rowName = curriculum.GetRowTitle(row);
 
         //,でつないでいる
         if (cell.Contains(','))

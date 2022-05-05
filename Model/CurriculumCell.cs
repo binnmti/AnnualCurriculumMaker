@@ -19,5 +19,4 @@ public class CurriculumCell
             return $"{Lesson.Name},{string.Join(',', Teachers)}";
         }
     } 
-
 }

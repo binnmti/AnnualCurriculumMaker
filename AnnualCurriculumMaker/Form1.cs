@@ -51,7 +51,7 @@ namespace WinFormsApp2
             foreach (var t in teacher)
             {
                 var item = listView1.Items.Add(t.Key);
-                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColName}][{x.RowName}]")));
+                item.SubItems.Add(string.Join(',', t.Value.Select(x => $"{x.Name}:[{x.ColTitle}][{x.RowTitle}]")));
             }
             listView1.EndUpdate();
             Text = GetTitle();

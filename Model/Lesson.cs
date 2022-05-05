@@ -2,14 +2,14 @@
 
 public class Lesson
 {
-    public Lesson(string name, string colName, string rowName)
+    public Lesson(string name, string colTitle, string rowTitle)
     {
         Name = name;
-        ColName = colName;
-        RowName = rowName;
+        ColTitle = colTitle;
+        RowTitle = rowTitle;
     }
 
     public string Name { get; } = "";
-    public string ColName { get; } = "";
-    public string RowName { get; } = "";
+    public string ColTitle { get; } = "";
+    public string RowTitle { get; } = "";
 }
