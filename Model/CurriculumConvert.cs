@@ -10,7 +10,7 @@ public static class CurriculumConvert
         => JsonSerializer.Serialize(curriculum, new JsonSerializerOptions { WriteIndented = indent, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) });
 
     public static Curriculum ToCurriculum(string json)
-        => JsonSerializer.Deserialize<Curriculum>(json) ?? new Curriculum(0, 0, new List<string>(), new List<string>());
+        => JsonSerializer.Deserialize<Curriculum>(json) ?? new Curriculum(0, 0, new List<string>(), new List<string>(), new List<string>(), new List<string>());
 
     public static IEnumerable<Teacher> ToTeachers(this Curriculum curriculum)
     {
@@ -36,9 +36,10 @@ public static class CurriculumConvert
     {
         string lesson;
         List<string> teachers = new();
-        var colName = curriculum.GetColTitle(col);
-        var rowName = curriculum.GetRowTitle(row);
-
+        var weekTitle = curriculum.GetWeekTitle(col);
+        var quarterTitle = curriculum.GetQuarterTitle(col);
+        var yearTitle = curriculum.GetYearTitle(row);
+        var periodTitle = curriculum.GetPeriodTitle(row);
         //,でつないでいる
         if (cell.Contains(','))
         {
@@ -46,7 +47,7 @@ public static class CurriculumConvert
             lesson = words[0];
             teachers = words.Skip(1).ToList();
 
-            curriculumCell = new CurriculumCell(new Lesson(lesson, colName, rowName), teachers);
+            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers);
             foreach (var teacher in teachers)
             {
                 if (curriculum.Any(teacher, col, row)) return false;
@@ -56,7 +57,7 @@ public static class CurriculumConvert
         else
         {
             lesson = cell;
-            curriculumCell = new CurriculumCell(new Lesson(lesson, colName, rowName), teachers);
+            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers);
             return true;
         }
     }
@@ -65,12 +66,14 @@ public static class CurriculumConvert
     {
         if (colIndex >= curriculum.Cols) throw new ArgumentException();
 
+        var yearTitle = curriculum.GetYearTitle(rowIndex);
+        var periodTitle = curriculum.GetPeriodTitle(rowIndex);
         for (int row = 0; row < curriculum.Rows; row++)
         {
             if (row == rowIndex) continue;
 
             var cell = curriculum[colIndex, row];
-            if (cell.Teachers.Any(x => x.Trim() == teacherName.Trim())) return true;
+            if (cell.Teachers.Any(x => x.Trim() == teacherName.Trim() && cell.Lesson.YearTitle != yearTitle && cell.Lesson.PeriodTitle == periodTitle)) return true;
         }
         return false;
     }

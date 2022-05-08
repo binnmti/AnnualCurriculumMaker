@@ -4,44 +4,57 @@ namespace WinFormsApp2
 {
     public partial class Form1 : Form
     {
+        private readonly List<string> Weeks = new() { "月", "火", "水", "木", "金", "土" };
+        private readonly List<string> Quarters = new() { "1Q", "2Q", "3Q", "4Q" };
+        private readonly List<string> Years = new() { "1年", "2年", "3年", "4年" };
+        private readonly List<string> Periods = new() { "1限", "2限", "3限", "4限", "5限", "6限" };
+
         private string FileName = "";
         private string JsonString = "";
         private string CellBeginText = "";
 
         private Curriculum Curriculum { get; set; }
 
-        private  List<string> Weeks = new List<string>() { "月", "火", "水", "木", "金", "土" };
         public Form1()
         {
             InitializeComponent();
-            for (int q = 0; q < 4; q++)
+
+            var weekTitles = new List<string>();
+            var quarterTitles = new List<string>();
+            var yearTitles = new List<string>();
+            var periodTitles = new List<string>();
+
+            foreach (var quarter in Quarters)
             {
-                foreach(var week in Weeks)
+                foreach (var week in Weeks)
                 {
                     var column = new DataGridViewColumn
                     {
-                        HeaderText = $"{q + 1}Q:{week}",
+                        HeaderText = $"{quarter}:{week}",
                         CellTemplate = new DataGridViewTextBoxCell()
                     };
                     dataGridView1.Columns.Add(column);
+
+                    weekTitles.Add(week);
+                    quarterTitles.Add(quarter);
                 }
             }
-            dataGridView1.RowCount = 4 * 6;
-
+            dataGridView1.RowCount = Weeks.Count * Quarters.Count;
             int row = 0;
-            for (int year = 0; year < 4; year++)
+            foreach (var year in Years)
             {
-                for (int t = 0; t < 6; t++)
+                foreach (var period in Periods)
                 {
-                    dataGridView1.Rows[row].HeaderCell.Value = $"{year + 1}年:{t + 1}限";
+                    dataGridView1.Rows[row].HeaderCell.Value = $"{year}:{period}";
+
+                    yearTitles.Add(year);
+                    periodTitles.Add(period);
                     row++;
                 }
             }
             dataGridView1.RowHeadersWidth = 150;
 
-            var colNames = dataGridView1.Columns.Cast<DataGridViewColumn>().Select(x => x.HeaderText).ToList();
-            var rowNames = dataGridView1.Rows.Cast<DataGridViewRow>().Select(x => x.HeaderCell.Value.ToString() ?? "").ToList();
-            Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount, colNames, rowNames);
+            Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount, weekTitles, quarterTitles, yearTitles, periodTitles);
         }
 
         private void UpdateListView()
@@ -52,7 +65,7 @@ namespace WinFormsApp2
             foreach (var teacher in teachers)
             {
                 var item = listView1.Items.Add(teacher.Name);
-                item.SubItems.Add(string.Join(',', teacher.Lessons.Select(l => $"{l.Name}:[{l.ColTitle}][{l.RowTitle}]")));
+                item.SubItems.Add(string.Join(',', teacher.Lessons.Select(l => $"{l.Name}[{l.WeekTitle}:{l.QuarterTitle}:{l.YearTitle}:{l.PeriodTitle}]")));
             }
             listView1.EndUpdate();
             Text = GetTitle();

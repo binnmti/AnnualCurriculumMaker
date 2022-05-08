@@ -6,21 +6,26 @@ public class Curriculum
 {
     public int Cols { get; }
     public int Rows { get; }
-    public List<string> ColTitles { get; }
-    public List<string> RowTitles { get; }
+    public List<string> WeekTitles { get; }
+    public List<string> QuarterTitles { get; }
+    public List<string> YearTitles { get; }
+    public List<string> PeriodTitles { get; }
     public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
 
-    public Curriculum(int cols, int rows, List<string> colTitles, List<string> rowTitles) : this(cols, rows, colTitles, rowTitles, GetCells(cols, rows, colTitles, rowTitles))
+    public Curriculum(int cols, int rows, List<string> weekTitles, List<string> quarterTitles, List<string> yearTitles, List<string> periodTitles)
+        : this(cols, rows, weekTitles, quarterTitles, yearTitles, periodTitles, GetCells(cols, rows, weekTitles, quarterTitles, yearTitles, periodTitles))
     {
     }
 
     [JsonConstructor]
-    public Curriculum(int cols, int rows, List<string> colTitles, List<string> rowTitles, List<CurriculumCell> cells)
+    public Curriculum(int cols, int rows, List<string> weekTitles, List<string> quarterTitles, List<string> yearTitles, List<string> periodTitles, List<CurriculumCell> cells)
     {
         Cols = cols;
         Rows = rows;
-        ColTitles = colTitles;
-        RowTitles = rowTitles;
+        WeekTitles = weekTitles;
+        QuarterTitles = quarterTitles;
+        YearTitles = yearTitles;
+        PeriodTitles = periodTitles;
         Cells = cells;
     }
 
@@ -30,17 +35,20 @@ public class Curriculum
         get { return Cells[row * Cols + col]; }
     }
 
-    public string GetColTitle(int col) => ColTitles[col];
-    public string GetRowTitle(int row) => RowTitles[row];
+    public string GetWeekTitle(int col) => WeekTitles[col];
+    public string GetQuarterTitle(int col) => QuarterTitles[col];
+    public string GetYearTitle(int row) => YearTitles[row];
+    public string GetPeriodTitle(int row) => PeriodTitles[row];
 
-    private static List<CurriculumCell> GetCells(int cols, int rows, List<string> colTitles, List<string> rowTitles)
+
+    private static List<CurriculumCell> GetCells(int cols, int rows, List<string> weekTitles, List<string> quarterTitles, List<string> yearTitles, List<string> periodTitles)
     {
         List<CurriculumCell> cells = new();
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                cells.Add(new CurriculumCell(new Lesson("", colTitles[j], rowTitles[i]), new List<string>()));
+                cells.Add(new CurriculumCell(new Lesson("", weekTitles[j], quarterTitles[j], yearTitles[i], periodTitles[i]), new List<string>()));
             }
         }
         return cells;
