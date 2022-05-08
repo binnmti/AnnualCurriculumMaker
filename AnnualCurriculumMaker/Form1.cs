@@ -60,12 +60,12 @@ namespace WinFormsApp2
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString() ?? "";
+            CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString() ?? "";
+            var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
             if (CellBeginText == value) return;
 
             if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
@@ -195,6 +195,7 @@ namespace WinFormsApp2
         {
             if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
+            if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
 
             Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
             SetSelectCellText("");
@@ -204,6 +205,7 @@ namespace WinFormsApp2
         {
             if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
+            if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
 
             Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
         }
@@ -212,7 +214,7 @@ namespace WinFormsApp2
         {
             if (dataGridView1.IsCurrentCellInEditMode) return;
             string s = Clipboard.GetText();
-            SetSelectCellText(s);
+            if (!string.IsNullOrEmpty(s)) SetSelectCellText(s);
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,6 +222,5 @@ namespace WinFormsApp2
             if (dataGridView1.IsCurrentCellInEditMode) return;
             SetSelectCellText("");
         }
-
     }
 }
