@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ファイルFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +49,7 @@
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -85,7 +86,8 @@
             this.listView1.CheckBoxes = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 16);
@@ -100,10 +102,10 @@
             this.columnHeader1.Text = "名前";
             this.columnHeader1.Width = 200;
             // 
-            // columnHeader2
+            // columnHeader3
             // 
-            this.columnHeader2.Text = "授業";
-            this.columnHeader2.Width = 1078;
+            this.columnHeader3.Text = "授業";
+            this.columnHeader3.Width = 1078;
             // 
             // splitter1
             // 
@@ -235,6 +237,11 @@
             this.saveFileDialog1.Filter = "xmlファイル|*.xml";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "コマ数";
+            this.columnHeader2.Width = 200;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -263,7 +270,7 @@
         private Panel panel1;
         private ListView listView1;
         private ColumnHeader columnHeader1;
-        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
         private Splitter splitter1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem ファイルFToolStripMenuItem;
@@ -280,5 +287,6 @@
         private ToolStripMenuItem CutToolStripMenuItem;
         private ToolStripMenuItem CopyToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator2;
+        private ColumnHeader columnHeader2;
     }
 }
