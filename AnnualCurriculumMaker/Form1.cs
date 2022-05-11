@@ -74,6 +74,12 @@ namespace WinFormsApp2
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
+            //セルの編集中は Enabledをfalseにしないとイベントに取られて編集テキストをコピペ出来ない。
+            CutToolStripMenuItem.Enabled = false;
+            CopyToolStripMenuItem.Enabled = false;
+            PasteToolStripMenuItem.Enabled = false;
+            DeleteToolStripMenuItem.Enabled = false;
+
             CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
         }
 
@@ -89,6 +95,12 @@ namespace WinFormsApp2
             }
             Curriculum[e.ColumnIndex, e.RowIndex] = cell;
             UpdateListView();
+
+            CutToolStripMenuItem.Enabled = true;
+            CopyToolStripMenuItem.Enabled = true;
+            PasteToolStripMenuItem.Enabled = true;
+            DeleteToolStripMenuItem.Enabled = true;
+
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -207,7 +219,6 @@ namespace WinFormsApp2
 
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
             if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
 
@@ -217,7 +228,6 @@ namespace WinFormsApp2
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.IsCurrentCellInEditMode) return;
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
             if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
 
@@ -226,14 +236,12 @@ namespace WinFormsApp2
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.IsCurrentCellInEditMode) return;
             string s = Clipboard.GetText();
             if (!string.IsNullOrEmpty(s)) SetSelectCellText(s);
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.IsCurrentCellInEditMode) return;
             SetSelectCellText("");
         }
     }
