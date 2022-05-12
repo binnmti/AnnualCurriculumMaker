@@ -14,6 +14,7 @@ namespace WinFormsApp2
         private string CellBeginText = "";
 
         private Curriculum Curriculum { get; set; }
+        private CurriculumCell CopyCell { get; set; }
 
         public Form1()
         {
@@ -100,7 +101,6 @@ namespace WinFormsApp2
             CopyToolStripMenuItem.Enabled = true;
             PasteToolStripMenuItem.Enabled = true;
             DeleteToolStripMenuItem.Enabled = true;
-
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,18 +220,22 @@ namespace WinFormsApp2
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
-            if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
+            var cell = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex];
+            if (string.IsNullOrEmpty(cell?.Value)) return;
 
-            Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
+            CopyCell = cell;
+            Clipboard.SetText(cell.Value);
             SetSelectCellText("");
         }
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
-            if (string.IsNullOrEmpty(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex]?.Value)) return;
+            var cell = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex];
+            if (string.IsNullOrEmpty(cell?.Value)) return;
 
-            Clipboard.SetText(Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value);
+            CopyCell = cell;
+            Clipboard.SetText(cell.Value);
         }
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
