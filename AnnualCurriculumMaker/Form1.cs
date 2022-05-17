@@ -32,10 +32,11 @@ namespace WinFormsApp2
                     var column = new DataGridViewColumn
                     {
                         HeaderText = $"{quarter}:{week}",
-                        CellTemplate = new DataGridViewTextBoxCell()
+                        CellTemplate = new DataGridViewTextBoxCell(),
+                        
                     };
+                    column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                     dataGridView1.Columns.Add(column);
-
                     weekTitles.Add(week);
                     quarterTitles.Add(quarter);
                 }
@@ -47,7 +48,6 @@ namespace WinFormsApp2
                 foreach (var period in Periods)
                 {
                     dataGridView1.Rows[row].HeaderCell.Value = $"{year}:{period}";
-
                     yearTitles.Add(year);
                     periodTitles.Add(period);
                     row++;
@@ -95,6 +95,7 @@ namespace WinFormsApp2
                 return;
             }
             Curriculum[e.ColumnIndex, e.RowIndex] = cell;
+            dataGridView1[e.ColumnIndex, e.RowIndex].Value = Curriculum[e.ColumnIndex, e.RowIndex].Value;
             UpdateListView();
 
             CutToolStripMenuItem.Enabled = true;
