@@ -18,5 +18,5 @@ public class CurriculumCell
             if (Teachers.Count == 0) return Lesson.Name;
             return $"{Lesson.Name}\n{string.Join(',', Teachers)}";
         }
-    } 
+    }
 }

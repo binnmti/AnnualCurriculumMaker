@@ -29,14 +29,14 @@ public class Curriculum
         Cells = cells;
     }
 
-    public CurriculumCell this[int row, int col]
+    public CurriculumCell this[int col, int row]
     {
         set { Cells[row * Cols + col] = value; }
         get { return Cells[row * Cols + col]; }
     }
 
-    public string GetWeekTitle(int col) => WeekTitles[col];
     public string GetQuarterTitle(int col) => QuarterTitles[col];
+    public string GetWeekTitle(int col) => WeekTitles[col];
     public string GetYearTitle(int row) => YearTitles[row];
     public string GetPeriodTitle(int row) => PeriodTitles[row];
 

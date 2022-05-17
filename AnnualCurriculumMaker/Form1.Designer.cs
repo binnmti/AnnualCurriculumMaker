@@ -30,6 +30,7 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -50,7 +51,6 @@
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -81,6 +81,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1306, 389);
             this.panel1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(559, 25);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "操作説明:Alt+改行で複数行編集。授業と先生の間を,で区切ると自動改行";
             // 
             // listView1
             // 
@@ -153,7 +162,7 @@
             // 
             this.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
             this.OpenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.OpenToolStripMenuItem.Text = "開く(&O)";
             this.OpenToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
@@ -161,26 +170,26 @@
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
             this.SaveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.SaveToolStripMenuItem.Text = "保存(&S)";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // NameSaveToolStripMenuItem
             // 
             this.NameSaveToolStripMenuItem.Name = "NameSaveToolStripMenuItem";
-            this.NameSaveToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.NameSaveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.NameSaveToolStripMenuItem.Text = "名前を付けて保存(&A)";
             this.NameSaveToolStripMenuItem.Click += new System.EventHandler(this.NameSaveToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(267, 6);
             // 
             // ExitToolStripMenuItem
             // 
             this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
-            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.ExitToolStripMenuItem.Text = "終了(&X)";
             this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -243,17 +252,8 @@
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "xml";
-            this.saveFileDialog1.Filter = "xmlファイル|*.xml";
+            this.saveFileDialog1.Filter = "xmlファイル|*.xml|csvファイル|*.csv";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(559, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "操作説明:Alt+改行で複数行編集。授業と先生の間を,で区切ると自動改行";
             // 
             // Form1
             // 

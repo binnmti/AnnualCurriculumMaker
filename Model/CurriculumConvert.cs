@@ -1,4 +1,5 @@
-﻿using System.Text.Encodings.Web;
+﻿using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
@@ -6,6 +7,35 @@ namespace Model;
 
 public static class CurriculumConvert
 {
+    public static string ToCsv(this Curriculum curriculum)
+    {
+        var csv = new StringBuilder();
+
+        csv.Append(',');
+        for (int col = 0; col < curriculum.Cols; col++)
+        {
+            csv.Append($"\"{curriculum.GetQuarterTitle(col)}:{curriculum.GetWeekTitle(col)}\",");
+        }
+        csv.AppendLine();
+        for (int row = 0; row < curriculum.Rows; row++)
+        {
+            csv.Append($"\"{curriculum.GetYearTitle(row)}:{curriculum.GetPeriodTitle(row)}\",");
+            for (int col = 0; col < curriculum.Cols; col++)
+            {
+                if(curriculum[col, row].Value == "")
+                {
+                    csv.Append(',');
+                }
+                else
+                {
+                    csv.Append($"\"{curriculum[col, row].Value}\",");
+                }
+            }
+            csv.AppendLine();
+        }
+        return csv.ToString();
+    }
+
     public static string ToJson(this Curriculum curriculum, bool indent)
         => JsonSerializer.Serialize(curriculum, new JsonSerializerOptions { WriteIndented = indent, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) });
 

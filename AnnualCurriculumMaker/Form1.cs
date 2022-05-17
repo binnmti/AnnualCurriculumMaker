@@ -1,4 +1,5 @@
 using Model;
+using System.Text;
 
 namespace WinFormsApp2
 {
@@ -139,7 +140,15 @@ namespace WinFormsApp2
 
         private void SaveFile(string fileName)
         {
-            File.WriteAllText(fileName, Curriculum.ToJson(true));
+            if (Path.GetExtension(fileName) == ".csv")
+            {
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                File.WriteAllText(fileName, Curriculum.ToCsv(), Encoding.GetEncoding("Shift_JIS"));
+            }
+            else
+            {
+                File.WriteAllText(fileName, Curriculum.ToJson(true));
+            }
 
             FileName = fileName;
             JsonString = Curriculum.ToJson(false);
@@ -148,12 +157,13 @@ namespace WinFormsApp2
 
         private void LoadFile(string fileName)
         {
+            //TODO:csvロードも出来そう。
             Curriculum = CurriculumConvert.ToCurriculum(File.ReadAllText(fileName));
-            for (int i = 0; i < Curriculum.Rows; i++)
+            for (int row = 0; row < Curriculum.Rows; row++)
             {
-                for (int j = 0; j < Curriculum.Cols; j++)
+                for (int col = 0; col < Curriculum.Cols; col++)
                 {
-                    dataGridView1[i, j].Value = Curriculum[i, j].Value;
+                    dataGridView1[row, col].Value = Curriculum[row, col].Value;
                 }
             }
             UpdateListView();
