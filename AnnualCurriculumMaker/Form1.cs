@@ -164,6 +164,12 @@ namespace WinFormsApp2
                 for (int col = 0; col < Curriculum.Cols; col++)
                 {
                     dataGridView1[row, col].Value = Curriculum[row, col].Value;
+                    var bg = Curriculum[row, col].GetBackColor();
+                    //TODO:Color.EmptyはColorがデシリアライズに対応していないので使えない。このやり方で良いか微妙
+                    if (bg != Color.FromArgb(0))
+                    {
+                        dataGridView1[row, col].Style.BackColor = Curriculum[row, col].GetBackColor();
+                    }
                 }
             }
             UpdateListView();
@@ -258,6 +264,21 @@ namespace WinFormsApp2
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetSelectCellText("");
+        }
+
+        private void BackColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cd = new ColorDialog
+            {
+                Color = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].GetBackColor()
+            };
+            if (cd.ShowDialog() != DialogResult.OK) return;
+
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                cell.Style.BackColor = cd.Color;
+                Curriculum[cell.ColumnIndex, cell.RowIndex].SetColor(cd.Color);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Drawing;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -77,7 +78,7 @@ public static class CurriculumConvert
             lesson = words[0];
             teachers = words.Skip(1).ToList();
 
-            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers);
+            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers, 0);
             foreach (var teacher in teachers)
             {
                 if (curriculum.Any(teacher, col, row)) return false;
@@ -87,7 +88,7 @@ public static class CurriculumConvert
         else
         {
             lesson = cell;
-            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers);
+            curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers, 0);
             return true;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace Model;
 
@@ -48,7 +49,7 @@ public class Curriculum
         {
             for (int j = 0; j < cols; j++)
             {
-                cells.Add(new CurriculumCell(new Lesson("", weekTitles[j], quarterTitles[j], yearTitles[i], periodTitles[i]), new List<string>()));
+                cells.Add(new CurriculumCell(new Lesson("", weekTitles[j], quarterTitles[j], yearTitles[i], periodTitles[i]), new List<string>(), 0));
             }
         }
         return cells;
