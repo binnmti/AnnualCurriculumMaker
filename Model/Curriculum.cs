@@ -49,7 +49,11 @@ public class Curriculum
         {
             for (int j = 0; j < cols; j++)
             {
-                cells.Add(new CurriculumCell(new Lesson("", weekTitles[j], quarterTitles[j], yearTitles[i], periodTitles[i]), new List<string>(), 0));
+                var weekTitle = j < weekTitles?.Count ? weekTitles[j] : "";
+                var quarterTitle = j < quarterTitles?.Count ? quarterTitles[j] : "";
+                var yearTitle = j < yearTitles?.Count ? yearTitles[i] : "";
+                var periodTitle = j < periodTitles?.Count ? periodTitles[i] : "";
+                cells.Add(new CurriculumCell(new Lesson("", weekTitle, quarterTitle, yearTitle, periodTitle), new List<string>(), 0));
             }
         }
         return cells;

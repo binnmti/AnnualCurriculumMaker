@@ -15,7 +15,7 @@ namespace WinFormsApp2
         private string CellBeginText = "";
 
         private Curriculum Curriculum { get; set; }
-        private CurriculumCell CopyCell { get; set; }
+        private Curriculum CopyCurriculum { get; set; }
 
         public Form1()
         {
@@ -87,6 +87,11 @@ namespace WinFormsApp2
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            CutToolStripMenuItem.Enabled = true;
+            CopyToolStripMenuItem.Enabled = true;
+            PasteToolStripMenuItem.Enabled = true;
+            DeleteToolStripMenuItem.Enabled = true;
+
             var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
             if (CellBeginText == value) return;
 
@@ -99,10 +104,6 @@ namespace WinFormsApp2
             dataGridView1[e.ColumnIndex, e.RowIndex].Value = Curriculum[e.ColumnIndex, e.RowIndex].Value;
             UpdateListView();
 
-            CutToolStripMenuItem.Enabled = true;
-            CopyToolStripMenuItem.Enabled = true;
-            PasteToolStripMenuItem.Enabled = true;
-            DeleteToolStripMenuItem.Enabled = true;
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -155,6 +156,17 @@ namespace WinFormsApp2
             Text = GetTitle();
         }
 
+        private static void SetDataGridView(int col, int row, DataGridView dataGrid, Curriculum curriculum)
+        {
+            dataGrid[col, row].Value = curriculum[col, row].Value;
+            //TODO:Color.EmptyはColorがデシリアライズに対応していないので使えない。このやり方で良いか微妙
+            var bg = curriculum[col, row].GetBackColor();
+            if (bg != Color.FromArgb(0))
+            {
+                dataGrid[col, row].Style.BackColor = curriculum[col, row].GetBackColor();
+            }
+        }
+
         private void LoadFile(string fileName)
         {
             //TODO:csvロードも出来そう。
@@ -163,13 +175,7 @@ namespace WinFormsApp2
             {
                 for (int col = 0; col < Curriculum.Cols; col++)
                 {
-                    dataGridView1[row, col].Value = Curriculum[row, col].Value;
-                    var bg = Curriculum[row, col].GetBackColor();
-                    //TODO:Color.EmptyはColorがデシリアライズに対応していないので使えない。このやり方で良いか微妙
-                    if (bg != Color.FromArgb(0))
-                    {
-                        dataGridView1[row, col].Style.BackColor = Curriculum[row, col].GetBackColor();
-                    }
+                    SetDataGridView(col, row, dataGridView1, Curriculum);
                 }
             }
             UpdateListView();
@@ -234,31 +240,76 @@ namespace WinFormsApp2
             UpdateListView();
         }
 
+        private Curriculum GetCopyCurriculum()
+        {
+            int minRow = dataGridView1.RowCount;
+            int maxRow = 0;
+            int minCol = dataGridView1.ColumnCount;
+            int maxCol = 0;
+            for (int row = 0; row < dataGridView1.RowCount; row++)
+            {
+                for (int col = 0; col < dataGridView1.ColumnCount; col++)
+                {
+                    if (dataGridView1[col, row].Selected)
+                    {
+                        minRow = Math.Min(minRow, row);
+                        maxRow = Math.Max(maxRow, row);
+                        minCol = Math.Min(minCol, col);
+                        maxCol = Math.Max(maxCol, col);
+                    }
+                }
+            }
+            var copyCurriculum = new Curriculum(maxCol - minCol + 1, maxRow - minRow + 1, new List<string>(), new List<string>(), new List<string>(), new List<string>());
+            for (int row = 0; row < copyCurriculum.Rows; row++)
+            {
+                for (int col = 0; col < copyCurriculum.Cols; col++)
+                {
+                    copyCurriculum[col, row] = Curriculum[col + minCol, row + minRow];
+                }
+            }
+            return copyCurriculum;
+        }
+
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
-            var cell = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex];
-            if (string.IsNullOrEmpty(cell?.Value)) return;
-
-            CopyCell = cell;
-            Clipboard.SetText(cell.Value);
-            SetSelectCellText("");
+            CopyCurriculum = GetCopyCurriculum();
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
+                Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
+                Curriculum[cell.ColumnIndex, cell.RowIndex].SetColor(Color.White);
+                cell.Style.BackColor = Color.White;
+                cell.Value = "";
+            }
         }
 
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedCells.Count > 1) MessageBox.Show("複数選択ではコピー出来ません");
-            var cell = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex];
-            if (string.IsNullOrEmpty(cell?.Value)) return;
-
-            CopyCell = cell;
-            Clipboard.SetText(cell.Value);
+            CopyCurriculum = GetCopyCurriculum();
         }
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string s = Clipboard.GetText();
-            if (!string.IsNullOrEmpty(s)) SetSelectCellText(s);
+            if (dataGridView1.SelectedCells.Count > 1)
+            {
+                MessageBox.Show("複数選択ではコピー出来ません");
+                return;
+            }
+            //string s = Clipboard.GetText();
+            //if (!string.IsNullOrEmpty(s)) SetSelectCellText(s)
+
+            for (int row = 0; row < CopyCurriculum.Rows; row++)
+            {
+                for (int col = 0; col < CopyCurriculum.Cols; col++)
+                {
+                    var colIndex = Math.Min(dataGridView1.SelectedCells[0].ColumnIndex + col, Curriculum.Cols);
+                    var rowIndex = Math.Min(dataGridView1.SelectedCells[0].RowIndex + row, Curriculum.Rows);
+                    Curriculum[colIndex, rowIndex] = CopyCurriculum[col, row];
+
+                    SetDataGridView(colIndex, rowIndex, dataGridView1, Curriculum);
+                }
+            }
+            UpdateListView();
         }
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
