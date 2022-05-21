@@ -1,15 +1,10 @@
 using Model;
 using System.Text;
 
-namespace WinFormsApp2;
+namespace AnnualCurriculumMaker;
 
 public partial class Form1 : Form
 {
-    private readonly List<string> Weeks = new() { "月", "火", "水", "木", "金", "土" };
-    private readonly List<string> Quarters = new() { "1Q", "2Q", "3Q", "4Q" };
-    private readonly List<string> Years = new() { "1年", "2年", "3年", "4年" };
-    private readonly List<string> Periods = new() { "1限", "2限", "3限", "4限", "5限", "6限" };
-
     private string FileName = "";
     private string JsonString = "";
     private string CellBeginText = "";
@@ -20,42 +15,7 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
-
-        var weekTitles = new List<string>();
-        var quarterTitles = new List<string>();
-        var yearTitles = new List<string>();
-        var periodTitles = new List<string>();
-
-        foreach (var quarter in Quarters)
-        {
-            foreach (var week in Weeks)
-            {
-                var column = new DataGridViewColumn
-                {
-                    HeaderText = $"{quarter}:{week}",
-                    CellTemplate = new DataGridViewTextBoxCell(),
-                };
-                column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                dataGridView1.Columns.Add(column);
-                weekTitles.Add(week);
-                quarterTitles.Add(quarter);
-            }
-        }
-        dataGridView1.RowCount = Weeks.Count * Quarters.Count;
-        int row = 0;
-        foreach (var year in Years)
-        {
-            foreach (var period in Periods)
-            {
-                dataGridView1.Rows[row].HeaderCell.Value = $"{year}:{period}";
-                yearTitles.Add(year);
-                periodTitles.Add(period);
-                row++;
-            }
-        }
-        dataGridView1.RowHeadersWidth = 150;
-
-        Curriculum = new Curriculum(dataGridView1.ColumnCount, dataGridView1.RowCount, weekTitles, quarterTitles, yearTitles, periodTitles);
+        Curriculum = dataGridView1.SetDataGridViewAndToCurriculum();
     }
 
     private void UpdateListView()
@@ -153,30 +113,12 @@ public partial class Form1 : Form
         Text = GetTitle();
     }
 
-    private static void SetDataGridView(int col, int row, DataGridView dataGrid, Curriculum curriculum)
-    {
-        dataGrid[col, row].Value = curriculum[col, row].Value;
-        //TODO:Color.EmptyはColorがデシリアライズに対応していないので使えない。このやり方で良いか微妙
-        var bg = curriculum[col, row].GetBackColor();
-        if (bg != Color.FromArgb(0))
-        {
-            dataGrid[col, row].Style.BackColor = curriculum[col, row].GetBackColor();
-        }
-    }
-
     private void LoadFile(string fileName)
     {
         //TODO:csvロードも出来そう。
         Curriculum = CurriculumConvert.ToCurriculum(File.ReadAllText(fileName));
-        for (int row = 0; row < Curriculum.Rows; row++)
-        {
-            for (int col = 0; col < Curriculum.Cols; col++)
-            {
-                SetDataGridView(col, row, dataGridView1, Curriculum);
-            }
-        }
+        dataGridView1.Load(Curriculum);
         UpdateListView();
-
         FileName = fileName;
         JsonString = Curriculum.ToJson(false);
         Text = GetTitle();
@@ -222,73 +164,16 @@ public partial class Form1 : Form
         }
     }
 
-    private Curriculum GetCopyCurriculum()
-    {
-        int minRow = dataGridView1.RowCount;
-        int maxRow = 0;
-        int minCol = dataGridView1.ColumnCount;
-        int maxCol = 0;
-        for (int row = 0; row < dataGridView1.RowCount; row++)
-        {
-            for (int col = 0; col < dataGridView1.ColumnCount; col++)
-            {
-                if (dataGridView1[col, row].Selected)
-                {
-                    minRow = Math.Min(minRow, row);
-                    maxRow = Math.Max(maxRow, row);
-                    minCol = Math.Min(minCol, col);
-                    maxCol = Math.Max(maxCol, col);
-                }
-            }
-        }
-        var copyCurriculum = new Curriculum(maxCol - minCol + 1, maxRow - minRow + 1);
-        for (int row = 0; row < copyCurriculum.Rows; row++)
-        {
-            for (int col = 0; col < copyCurriculum.Cols; col++)
-            {
-                copyCurriculum[col, row] = Curriculum[col + minCol, row + minRow];
-            }
-        }
-        return copyCurriculum;
-    }
-
     private void CutToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        CopyCurriculum = GetCopyCurriculum();
-        foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
-        {
-            Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
-            Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
-            Curriculum[cell.ColumnIndex, cell.RowIndex].SetColor(Color.White);
-            cell.Style.BackColor = Color.White;
-            cell.Value = "";
-        }
+        CopyCurriculum = dataGridView1.Copy(Curriculum);
+        dataGridView1.Cut(Curriculum);
+        UpdateListView();
     }
 
     private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        CopyCurriculum = GetCopyCurriculum();
-    }
-
-    private void Paste(Curriculum copyCurriculum)
-    {
-        for (int row = 0; row < copyCurriculum.Rows; row++)
-        {
-            for (int col = 0; col < copyCurriculum.Cols; col++)
-            {
-                var colIndex = Math.Min(dataGridView1.SelectedCells[0].ColumnIndex + col, Curriculum.Cols);
-                var rowIndex = Math.Min(dataGridView1.SelectedCells[0].RowIndex + row, Curriculum.Rows);
-                Curriculum[colIndex, rowIndex] = Curriculum[colIndex, rowIndex].Copy(copyCurriculum[col, row]);
-
-                //TODO:重複警告は保存時とか終了時に再度したいかな
-                if (Curriculum.IsExist(colIndex, rowIndex))
-                {
-                    MessageBox.Show($"{Curriculum[colIndex, rowIndex].Value}が重複しています！");
-                }
-                SetDataGridView(colIndex, rowIndex, dataGridView1, Curriculum);
-            }
-        }
-        UpdateListView();
+        CopyCurriculum = dataGridView1.Copy(Curriculum);
     }
 
     private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -298,7 +183,8 @@ public partial class Form1 : Form
             MessageBox.Show("複数選択している状態ではペースト出来ません");
             return;
         }
-        Paste(CopyCurriculum);
+        dataGridView1.Paste(Curriculum, CopyCurriculum);
+        UpdateListView();
     }
 
     private void RowColPasetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -308,17 +194,13 @@ public partial class Form1 : Form
             MessageBox.Show("複数選択している状態ではペースト出来ません");
             return;
         }
-        Paste(CopyCurriculum.ReplaceMatrix());
+        dataGridView1.Paste(Curriculum, CopyCurriculum.ReplaceMatrix());
+        UpdateListView();
     }
 
     private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
-        {
-            Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
-            Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
-            cell.Value = "";
-        }
+        dataGridView1.Cut(Curriculum);
         UpdateListView();
     }
 
@@ -330,10 +212,6 @@ public partial class Form1 : Form
         };
         if (cd.ShowDialog() != DialogResult.OK) return;
 
-        foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
-        {
-            cell.Style.BackColor = cd.Color;
-            Curriculum[cell.ColumnIndex, cell.RowIndex].SetColor(cd.Color);
-        }
+        dataGridView1.SetColor(Curriculum, cd.Color);
     }
 }

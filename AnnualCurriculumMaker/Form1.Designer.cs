@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp2
+﻿namespace AnnualCurriculumMaker
 {
     partial class Form1
     {
