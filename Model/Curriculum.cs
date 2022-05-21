@@ -13,6 +13,11 @@ public class Curriculum
     public List<string> PeriodTitles { get; }
     public List<CurriculumCell> Cells { get; } = new List<CurriculumCell>();
 
+    public Curriculum(int cols, int rows)
+        : this(cols, rows, new List<string>(), new List<string>(), new List<string>(), new List<string>(), GetCells(cols, rows, new List<string>(), new List<string>(), new List<string>(), new List<string>()))
+    {
+    }
+
     public Curriculum(int cols, int rows, List<string> weekTitles, List<string> quarterTitles, List<string> yearTitles, List<string> periodTitles)
         : this(cols, rows, weekTitles, quarterTitles, yearTitles, periodTitles, GetCells(cols, rows, weekTitles, quarterTitles, yearTitles, periodTitles))
     {

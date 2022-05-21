@@ -47,12 +47,14 @@
             this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.貼り付けのオプションToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MatrixReplacePasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.BackColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.BackColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -202,6 +204,7 @@
             this.CutToolStripMenuItem,
             this.CopyToolStripMenuItem,
             this.PasteToolStripMenuItem,
+            this.貼り付けのオプションToolStripMenuItem,
             this.toolStripSeparator2,
             this.BackColorToolStripMenuItem,
             this.toolStripSeparator3,
@@ -229,15 +232,45 @@
             // PasteToolStripMenuItem
             // 
             this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
+            this.PasteToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.PasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.PasteToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.PasteToolStripMenuItem.Text = "貼り付け(&P)";
             this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
+            // 貼り付けのオプションToolStripMenuItem
+            // 
+            this.貼り付けのオプションToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MatrixReplacePasteToolStripMenuItem});
+            this.貼り付けのオプションToolStripMenuItem.Name = "貼り付けのオプションToolStripMenuItem";
+            this.貼り付けのオプションToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.貼り付けのオプションToolStripMenuItem.Text = "貼り付けのオプション";
+            // 
+            // MatrixReplacePasteToolStripMenuItem
+            // 
+            this.MatrixReplacePasteToolStripMenuItem.Name = "MatrixReplacePasteToolStripMenuItem";
+            this.MatrixReplacePasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.MatrixReplacePasteToolStripMenuItem.Size = new System.Drawing.Size(378, 34);
+            this.MatrixReplacePasteToolStripMenuItem.Text = "行/列入れ替え貼り付け(&M)";
+            this.MatrixReplacePasteToolStripMenuItem.Click += new System.EventHandler(this.RowColPasetToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(267, 6);
+            // 
+            // BackColorToolStripMenuItem
+            // 
+            this.BackColorToolStripMenuItem.Name = "BackColorToolStripMenuItem";
+            this.BackColorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.BackColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.BackColorToolStripMenuItem.Text = "背景色...(&B)";
+            this.BackColorToolStripMenuItem.Click += new System.EventHandler(this.BackColorToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(267, 6);
             // 
             // DeleteToolStripMenuItem
             // 
@@ -259,18 +292,6 @@
             this.saveFileDialog1.DefaultExt = "xml";
             this.saveFileDialog1.Filter = "xmlファイル|*.xml|csvファイル|*.csv";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
-            // 
-            // BackColorToolStripMenuItem
-            // 
-            this.BackColorToolStripMenuItem.Name = "BackColorToolStripMenuItem";
-            this.BackColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.BackColorToolStripMenuItem.Text = "背景色(&B)";
-            this.BackColorToolStripMenuItem.Click += new System.EventHandler(this.BackColorToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(267, 6);
             // 
             // Form1
             // 
@@ -323,5 +344,7 @@
         private ToolStripMenuItem BackColorToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator3;
         private ColorDialog colorDialog1;
+        private ToolStripMenuItem 貼り付けのオプションToolStripMenuItem;
+        private ToolStripMenuItem MatrixReplacePasteToolStripMenuItem;
     }
 }

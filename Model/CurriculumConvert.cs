@@ -8,6 +8,19 @@ namespace Model;
 
 public static class CurriculumConvert
 {
+    public static Curriculum ReplaceMatrix(this Curriculum src)
+    {
+        var dst = new Curriculum(src.Rows, src.Cols);
+        for (int row = 0; row < src.Rows; row++)
+        {
+            for (int col = 0; col < src.Cols; col++)
+            {
+                dst[row, col] =  src[col, row];
+            }
+        }
+        return dst;
+    }
+
     public static string ToCsv(this Curriculum curriculum)
     {
         var csv = new StringBuilder();
