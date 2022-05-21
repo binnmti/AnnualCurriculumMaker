@@ -36,3 +36,13 @@ public class CurriculumCell
         }
     }
 }
+
+public static class CurriculumCellConvert
+{
+    //TODO:Titleはコピらない。ただちょっと筋が悪い気がする。。。
+    public static CurriculumCell Copy(this CurriculumCell src, CurriculumCell dst)
+    {
+        var lesson = new Lesson(dst.Lesson.Name, src.Lesson.WeekTitle, src.Lesson.QuarterTitle, src.Lesson.YearTitle, src.Lesson.PeriodTitle);
+        return new CurriculumCell(lesson, dst.Teachers, dst.TextColorValue);
+    }
+}

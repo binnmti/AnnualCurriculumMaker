@@ -77,13 +77,8 @@ public static class CurriculumConvert
             var words = cell.Split(',');
             lesson = words[0];
             teachers = words.Skip(1).ToList();
-
             curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers, 0);
-            foreach (var teacher in teachers)
-            {
-                if (curriculum.Any(teacher, col, row)) return false;
-            }
-            return true;
+            return !teachers.Any(t => curriculum.IsExist(t, col, row));
         }
         else
         {
@@ -93,7 +88,10 @@ public static class CurriculumConvert
         }
     }
 
-    private static bool Any(this Curriculum curriculum, string teacherName, int colIndex, int rowIndex)
+    public static bool IsExist(this Curriculum curriculum, int col, int row)
+        => curriculum[col, row].Teachers.Any(t => curriculum.IsExist(t, col, row));
+
+    private static bool IsExist(this Curriculum curriculum, string teacherName, int colIndex, int rowIndex)
     {
         if (colIndex >= curriculum.Cols) throw new ArgumentException();
 

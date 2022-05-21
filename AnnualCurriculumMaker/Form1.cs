@@ -34,7 +34,6 @@ namespace WinFormsApp2
                     {
                         HeaderText = $"{quarter}:{week}",
                         CellTemplate = new DataGridViewTextBoxCell(),
-                        
                     };
                     column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                     dataGridView1.Columns.Add(column);
@@ -98,12 +97,10 @@ namespace WinFormsApp2
             if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
             {
                 MessageBox.Show("重複しています！");
-                return;
             }
             Curriculum[e.ColumnIndex, e.RowIndex] = cell;
             dataGridView1[e.ColumnIndex, e.RowIndex].Value = Curriculum[e.ColumnIndex, e.RowIndex].Value;
             UpdateListView();
-
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -225,21 +222,6 @@ namespace WinFormsApp2
             }
         }
 
-        private void SetSelectCellText(string text)
-        {
-            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
-            {
-                if (!Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, text, out var curriculumCell))
-                {
-                    MessageBox.Show("重複しています！");
-                    return;
-                }
-                Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
-                cell.Value = text;
-            }
-            UpdateListView();
-        }
-
         private Curriculum GetCopyCurriculum()
         {
             int minRow = dataGridView1.RowCount;
@@ -292,20 +274,22 @@ namespace WinFormsApp2
         {
             if (dataGridView1.SelectedCells.Count > 1)
             {
-                MessageBox.Show("複数選択ではコピー出来ません");
+                MessageBox.Show("複数選択している状態ではペースト出来ません");
                 return;
             }
-            //string s = Clipboard.GetText();
-            //if (!string.IsNullOrEmpty(s)) SetSelectCellText(s)
-
             for (int row = 0; row < CopyCurriculum.Rows; row++)
             {
                 for (int col = 0; col < CopyCurriculum.Cols; col++)
                 {
                     var colIndex = Math.Min(dataGridView1.SelectedCells[0].ColumnIndex + col, Curriculum.Cols);
                     var rowIndex = Math.Min(dataGridView1.SelectedCells[0].RowIndex + row, Curriculum.Rows);
-                    Curriculum[colIndex, rowIndex] = CopyCurriculum[col, row];
+                    Curriculum[colIndex, rowIndex] = Curriculum[colIndex, rowIndex].Copy(CopyCurriculum[col, row]);
 
+                    //TODO:重複警告は保存時とか終了時に再度したいかな
+                    if (Curriculum.IsExist(colIndex, rowIndex))
+                    {
+                        MessageBox.Show($"{Curriculum[colIndex, rowIndex].Value}が重複しています！");
+                    }
                     SetDataGridView(colIndex, rowIndex, dataGridView1, Curriculum);
                 }
             }
@@ -314,7 +298,13 @@ namespace WinFormsApp2
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetSelectCellText("");
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                Curriculum.TryParse(cell.ColumnIndex, cell.RowIndex, "", out var curriculumCell);
+                Curriculum[cell.ColumnIndex, cell.RowIndex] = curriculumCell;
+                cell.Value = "";
+            }
+            UpdateListView();
         }
 
         private void BackColorToolStripMenuItem_Click(object sender, EventArgs e)
