@@ -101,7 +101,6 @@
             this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.CheckBoxes = true;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -217,7 +216,7 @@
             // 
             this.CutToolStripMenuItem.Name = "CutToolStripMenuItem";
             this.CutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.CutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.CutToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.CutToolStripMenuItem.Text = "切り取り(&T)";
             this.CutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
@@ -225,7 +224,7 @@
             // 
             this.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
             this.CopyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.CopyToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.CopyToolStripMenuItem.Text = "コピー(&C)";
             this.CopyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
@@ -234,7 +233,7 @@
             this.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
             this.PasteToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.PasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.PasteToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.PasteToolStripMenuItem.Text = "貼り付け(&P)";
             this.PasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
@@ -243,7 +242,7 @@
             this.貼り付けのオプションToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MatrixReplacePasteToolStripMenuItem});
             this.貼り付けのオプションToolStripMenuItem.Name = "貼り付けのオプションToolStripMenuItem";
-            this.貼り付けのオプションToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.貼り付けのオプションToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.貼り付けのオプションToolStripMenuItem.Text = "貼り付けのオプション";
             // 
             // MatrixReplacePasteToolStripMenuItem
@@ -257,26 +256,26 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(267, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(258, 6);
             // 
             // BackColorToolStripMenuItem
             // 
             this.BackColorToolStripMenuItem.Name = "BackColorToolStripMenuItem";
             this.BackColorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.BackColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.BackColorToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.BackColorToolStripMenuItem.Text = "背景色...(&B)";
             this.BackColorToolStripMenuItem.Click += new System.EventHandler(this.BackColorToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(267, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(258, 6);
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
             this.DeleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(261, 34);
             this.DeleteToolStripMenuItem.Text = "削除(&D)";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 

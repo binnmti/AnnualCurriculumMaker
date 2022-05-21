@@ -15,6 +15,7 @@ internal static class AnnualCurriculumMakerControlExtention
             item.SubItems.Add(teacher.Frame);
             item.SubItems.Add(teacher.Lesson);
         }
+        listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         listView.EndUpdate();
     }
 
