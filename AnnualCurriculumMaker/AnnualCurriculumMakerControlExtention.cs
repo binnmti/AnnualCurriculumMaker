@@ -123,16 +123,20 @@ internal static class AnnualCurriculumMakerControlExtention
             {
                 var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols);
                 var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows);
-                curriculum[colIndex, rowIndex] = curriculum[colIndex, rowIndex].Copy(copyCurriculum[col, row]);
-
-                //TODO:重複警告は保存時とか終了時に再度したいかな
-                if (curriculum.IsExist(colIndex, rowIndex))
-                {
-                    MessageBox.Show($"{curriculum[colIndex, rowIndex].Value}が重複しています！");
-                }
-                dataGridView[colIndex, rowIndex].SetDataGridViewCell(curriculum[colIndex, rowIndex]);
+                var value = curriculum[colIndex, rowIndex].Copy(copyCurriculum[col, row]).Value;
+                dataGridView.Edit(colIndex, rowIndex, value, curriculum);
             }
         }
+    }
+
+    internal static void Edit(this DataGridView dataGridView, int col, int row, string value, Curriculum curriculum)
+    {
+        if (!curriculum.TryParse(col, row, value, out var cell))
+        {
+            MessageBox.Show($"{cell.Value}が重複しています！");
+        }
+        curriculum[col, row] = cell;
+        dataGridView[col, row].SetDataGridViewCell(cell);
     }
 
     internal static void SetColor(this DataGridView dataGridView, Curriculum curriculum, Color color)

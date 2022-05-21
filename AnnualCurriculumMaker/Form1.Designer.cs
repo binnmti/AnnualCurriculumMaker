@@ -92,9 +92,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(559, 25);
+            this.label1.Size = new System.Drawing.Size(573, 25);
             this.label1.TabIndex = 1;
-            this.label1.Text = "操作説明:Alt+改行で複数行編集。授業と先生の間を,で区切ると自動改行";
+            this.label1.Text = "操作説明:Shift+改行で複数行編集。授業と先生の間を,で区切ると自動改行";
             // 
             // listView1
             // 
@@ -251,7 +251,7 @@
             this.MatrixReplacePasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.MatrixReplacePasteToolStripMenuItem.Size = new System.Drawing.Size(378, 34);
             this.MatrixReplacePasteToolStripMenuItem.Text = "行/列入れ替え貼り付け(&M)";
-            this.MatrixReplacePasteToolStripMenuItem.Click += new System.EventHandler(this.RowColPasetToolStripMenuItem_Click);
+            this.MatrixReplacePasteToolStripMenuItem.Click += new System.EventHandler(this.MatrixReplacePasetToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 

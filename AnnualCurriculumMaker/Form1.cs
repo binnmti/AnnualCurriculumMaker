@@ -8,77 +8,31 @@ public partial class Form1 : Form
     private string FileName = "";
     private string JsonString = "";
     private string CellBeginText = "";
-
     private Curriculum Curriculum { get; set; }
     private Curriculum CopyCurriculum { get; set; }
 
     public Form1()
     {
         InitializeComponent();
-        Curriculum = dataGridView1.SetDataGridViewAndToCurriculum();
-    }
 
-    private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-    {
-        //セルの編集中は Enabledをfalseにしないとイベントに取られて編集テキストをコピペ出来ない。
-        CutToolStripMenuItem.Enabled = false;
-        CopyToolStripMenuItem.Enabled = false;
         PasteToolStripMenuItem.Enabled = false;
-        DeleteToolStripMenuItem.Enabled = false;
-
-        CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+        MatrixReplacePasteToolStripMenuItem.Enabled = false;
+        Curriculum = dataGridView1.SetDataGridViewAndToCurriculum();
+        CopyCurriculum = Curriculum;
     }
 
-    private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+    private string GetTitle()
     {
-        CutToolStripMenuItem.Enabled = true;
-        CopyToolStripMenuItem.Enabled = true;
-        PasteToolStripMenuItem.Enabled = true;
-        DeleteToolStripMenuItem.Enabled = true;
-
-        var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
-        if (CellBeginText == value) return;
-
-        if (!Curriculum.TryParse(e.ColumnIndex, e.RowIndex, value, out var cell))
-        {
-            MessageBox.Show("重複しています！");
-        }
-        Curriculum[e.ColumnIndex, e.RowIndex] = cell;
-        dataGridView1[e.ColumnIndex, e.RowIndex].Value = Curriculum[e.ColumnIndex, e.RowIndex].Value;
-        listView1.Update(Curriculum);
+        var title = $"年間カリキュラムメーカー";
+        if (!string.IsNullOrEmpty(FileName)) title += $" - {Path.GetFileName(FileName)}";
+        if (JsonString != Curriculum.ToJson(false)) title += "*";
+        return title;
     }
 
     private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
     {
         openFileDialog1.InitialDirectory = Application.ExecutablePath;
         openFileDialog1.ShowDialog();
-    }
-
-    private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        if (string.IsNullOrEmpty(FileName))
-        {
-            saveFileDialog1.ShowDialog();
-        }
-        else
-        {
-            SaveFile(FileName);
-        }
-    }
-
-    private void NameSaveToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        if (File.Exists(FileName))
-        {
-            saveFileDialog1.InitialDirectory = Path.GetDirectoryName(FileName);
-            saveFileDialog1.FileName = Path.GetFileName(FileName);
-        }
-        saveFileDialog1.ShowDialog();
-    }
-
-    private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        LoadFile(openFileDialog1.FileName);
     }
 
     private void SaveFile(string fileName)
@@ -109,22 +63,36 @@ public partial class Form1 : Form
         Text = GetTitle();
     }
 
-    private string GetTitle()
+    private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var title = $"年間カリキュラムメーカー";
-        if (!string.IsNullOrEmpty(FileName)) title += $" - {Path.GetFileName(FileName)}";
-        if (JsonString != Curriculum.ToJson(false)) title += "*";
-        return title;
+        if (string.IsNullOrEmpty(FileName))
+        {
+            saveFileDialog1.ShowDialog();
+        }
+        else
+        {
+            SaveFile(FileName);
+        }
+    }
+
+    private void NameSaveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (File.Exists(FileName))
+        {
+            saveFileDialog1.InitialDirectory = Path.GetDirectoryName(FileName);
+            saveFileDialog1.FileName = Path.GetFileName(FileName);
+        }
+        saveFileDialog1.ShowDialog();
+    }
+
+    private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        LoadFile(openFileDialog1.FileName);
     }
 
     private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
     {
         SaveFile(saveFileDialog1.FileName);
-    }
-
-    private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        Application.Exit();
     }
 
     private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -149,16 +117,53 @@ public partial class Form1 : Form
         }
     }
 
+    private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
+
+
+    private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+    {
+        //セルの編集中は Enabledをfalseにしないとイベントに取られて編集テキストをコピペ出来ない。
+        CutToolStripMenuItem.Enabled = false;
+        CopyToolStripMenuItem.Enabled = false;
+        PasteToolStripMenuItem.Enabled = false;
+        DeleteToolStripMenuItem.Enabled = false;
+
+        CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+    }
+
+    private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+    {
+        CutToolStripMenuItem.Enabled = true;
+        CopyToolStripMenuItem.Enabled = true;
+        PasteToolStripMenuItem.Enabled = true;
+        DeleteToolStripMenuItem.Enabled = true;
+
+        var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+        if (CellBeginText == value) return;
+        //,の時は自動改行
+        if (value.Contains(',')) value = $"{value[..value.IndexOf(',')]}\n{value[(value.IndexOf(',') + 1)..]}";
+
+        dataGridView1.Edit(e.ColumnIndex, e.RowIndex, value, Curriculum);
+        listView1.Update(Curriculum);
+    }
+
     private void CutToolStripMenuItem_Click(object sender, EventArgs e)
     {
         CopyCurriculum = dataGridView1.Copy(Curriculum);
         dataGridView1.Cut(Curriculum);
         listView1.Update(Curriculum);
+        PasteToolStripMenuItem.Enabled = true;
+        MatrixReplacePasteToolStripMenuItem.Enabled = true;
     }
 
     private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
     {
         CopyCurriculum = dataGridView1.Copy(Curriculum);
+        PasteToolStripMenuItem.Enabled = true;
+        MatrixReplacePasteToolStripMenuItem.Enabled = true;
     }
 
     private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,7 +177,7 @@ public partial class Form1 : Form
         listView1.Update(Curriculum);
     }
 
-    private void RowColPasetToolStripMenuItem_Click(object sender, EventArgs e)
+    private void MatrixReplacePasetToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (dataGridView1.SelectedCells.Count > 1)
         {

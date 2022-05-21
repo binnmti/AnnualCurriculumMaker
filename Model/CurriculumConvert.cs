@@ -84,12 +84,11 @@ public static class CurriculumConvert
         var quarterTitle = curriculum.GetQuarterTitle(col);
         var yearTitle = curriculum.GetYearTitle(row);
         var periodTitle = curriculum.GetPeriodTitle(row);
-        //,でつないでいる
-        if (cell.Contains(','))
+        if (cell.Contains('\n'))
         {
-            var words = cell.Split(',');
+            var words = cell.Split('\n');
             lesson = words[0];
-            teachers = words.Skip(1).ToList();
+            teachers = words[1].Split(',').ToList();
             curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers, 0);
             return !teachers.Any(t => curriculum.IsExist(t, col, row));
         }
