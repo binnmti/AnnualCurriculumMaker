@@ -18,21 +18,6 @@ public partial class Form1 : Form
         Curriculum = dataGridView1.SetDataGridViewAndToCurriculum();
     }
 
-    private void UpdateListView()
-    {
-        var teachers = Curriculum.ToTeachers();
-        listView1.BeginUpdate();
-        listView1.Items.Clear();
-        foreach (var teacher in teachers)
-        {
-            var item = listView1.Items.Add(teacher.Name);
-            item.SubItems.Add(teacher.Frame);
-            item.SubItems.Add(teacher.Lesson);
-        }
-        listView1.EndUpdate();
-        Text = GetTitle();
-    }
-
     private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
     {
         //セルの編集中は Enabledをfalseにしないとイベントに取られて編集テキストをコピペ出来ない。
@@ -60,7 +45,7 @@ public partial class Form1 : Form
         }
         Curriculum[e.ColumnIndex, e.RowIndex] = cell;
         dataGridView1[e.ColumnIndex, e.RowIndex].Value = Curriculum[e.ColumnIndex, e.RowIndex].Value;
-        UpdateListView();
+        listView1.Update(Curriculum);
     }
 
     private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -118,7 +103,7 @@ public partial class Form1 : Form
         //TODO:csvロードも出来そう。
         Curriculum = CurriculumConvert.ToCurriculum(File.ReadAllText(fileName));
         dataGridView1.Load(Curriculum);
-        UpdateListView();
+        listView1.Update(Curriculum);
         FileName = fileName;
         JsonString = Curriculum.ToJson(false);
         Text = GetTitle();
@@ -168,7 +153,7 @@ public partial class Form1 : Form
     {
         CopyCurriculum = dataGridView1.Copy(Curriculum);
         dataGridView1.Cut(Curriculum);
-        UpdateListView();
+        listView1.Update(Curriculum);
     }
 
     private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,7 +169,7 @@ public partial class Form1 : Form
             return;
         }
         dataGridView1.Paste(Curriculum, CopyCurriculum);
-        UpdateListView();
+        listView1.Update(Curriculum);
     }
 
     private void RowColPasetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -195,13 +180,13 @@ public partial class Form1 : Form
             return;
         }
         dataGridView1.Paste(Curriculum, CopyCurriculum.ReplaceMatrix());
-        UpdateListView();
+        listView1.Update(Curriculum);
     }
 
     private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
     {
         dataGridView1.Cut(Curriculum);
-        UpdateListView();
+        listView1.Update(Curriculum);
     }
 
     private void BackColorToolStripMenuItem_Click(object sender, EventArgs e)

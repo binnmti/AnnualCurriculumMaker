@@ -2,8 +2,22 @@
 
 namespace AnnualCurriculumMaker;
 
-internal static class DataGridViewExtention
+internal static class AnnualCurriculumMakerControlExtention
 {
+    internal static void Update(this ListView listView, Curriculum curriculum)
+    {
+        var teachers = curriculum.ToTeachers();
+        listView.BeginUpdate();
+        listView.Items.Clear();
+        foreach (var teacher in teachers)
+        {
+            var item = listView.Items.Add(teacher.Name);
+            item.SubItems.Add(teacher.Frame);
+            item.SubItems.Add(teacher.Lesson);
+        }
+        listView.EndUpdate();
+    }
+
     internal static Curriculum SetDataGridViewAndToCurriculum(this DataGridView dataGridView)
     {
         var weeks = new List<string>() { "月", "火", "水", "木", "金", "土" };
