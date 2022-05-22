@@ -35,11 +35,4 @@ public class CurriculumCell
             return $"{Lesson.Name}\n{string.Join(',', Teachers)}";
         }
     }
-
-    public CurriculumCell GetCellOtherTitle(CurriculumCell newCell)
-    {
-        //Title系は今のまま、それ以外は渡された値を使う
-        var lesson = new Lesson(newCell.Lesson.Name, Lesson.WeekTitle, Lesson.QuarterTitle, Lesson.YearTitle, Lesson.PeriodTitle);
-        return new CurriculumCell(lesson, newCell.Teachers, newCell.TextColorValue);
-    }
 }

@@ -99,7 +99,7 @@ public static class CurriculumConvert
         }
     }
 
-    private static bool IsExist(this Curriculum curriculum, string teacherName, int colIndex, int rowIndex)
+    public static bool IsExist(this Curriculum curriculum, string teacherName, int colIndex, int rowIndex)
     {
         if (colIndex >= curriculum.Cols) throw new ArgumentException();
 

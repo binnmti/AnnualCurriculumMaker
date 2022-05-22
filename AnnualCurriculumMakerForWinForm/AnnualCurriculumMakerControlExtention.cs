@@ -125,8 +125,18 @@ internal static class AnnualCurriculumMakerControlExtention
             {
                 var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols);
                 var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows);
-                var value = curriculum[colIndex, rowIndex].GetCellOtherTitle(copyCurriculum[col, row]).Value;
-                dataGridView.Edit(colIndex, rowIndex, value, curriculum);
+
+                var cell = curriculum[colIndex, rowIndex];
+                var copyCell = copyCurriculum[col, row];
+                //タイトルはそのままでそれ以外をコピー
+                var lesson = new Lesson(copyCell.Lesson.Name, cell.Lesson.WeekTitle, cell.Lesson.QuarterTitle, cell.Lesson.YearTitle, cell.Lesson.PeriodTitle);
+                var newCell = new CurriculumCell(lesson, copyCell.Teachers, copyCell.TextColorValue);
+                if (newCell.Teachers.Any(t => curriculum.IsExist(t, colIndex, rowIndex)))
+                {
+                    MessageBox.Show($"{newCell.Value}が重複しています！");
+                }
+                curriculum[colIndex, rowIndex] = newCell;
+                dataGridView[colIndex, rowIndex].SetDataGridViewCell(newCell);
             }
         }
     }
