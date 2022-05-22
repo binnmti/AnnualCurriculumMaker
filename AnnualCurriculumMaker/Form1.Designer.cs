@@ -1,4 +1,4 @@
-﻿namespace AnnualCurriculumMaker
+﻿namespace AnnualCurriculumMakerForWinForm
 {
     partial class Form1
     {

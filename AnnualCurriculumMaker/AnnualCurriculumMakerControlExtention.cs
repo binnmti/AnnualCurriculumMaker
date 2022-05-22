@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using AnnualCurriculumMaker;
 
-namespace AnnualCurriculumMaker;
+namespace AnnualCurriculumMakerForWinForm;
 
 internal static class AnnualCurriculumMakerControlExtention
 {

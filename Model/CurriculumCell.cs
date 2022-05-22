@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Model;
+namespace AnnualCurriculumMaker;
 
 public class CurriculumCell
 {

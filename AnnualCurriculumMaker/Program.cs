@@ -1,4 +1,4 @@
-namespace AnnualCurriculumMaker
+namespace AnnualCurriculumMakerForWinForm
 {
     internal static class Program
     {

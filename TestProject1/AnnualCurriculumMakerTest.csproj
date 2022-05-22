@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnnualCurriculumMaker\AnnualCurriculumMaker.csproj" />
+    <ProjectReference Include="..\AnnualCurriculumMaker\AnnualCurriculumMakerForWinForm.csproj" />
   </ItemGroup>
 
 </Project>

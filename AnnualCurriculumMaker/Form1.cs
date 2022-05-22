@@ -1,7 +1,7 @@
-using Model;
+using AnnualCurriculumMaker;
 using System.Text;
 
-namespace AnnualCurriculumMaker;
+namespace AnnualCurriculumMakerForWinForm;
 
 public partial class Form1 : Form
 {

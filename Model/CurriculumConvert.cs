@@ -1,10 +1,9 @@
-﻿using System.Drawing;
-using System.Text;
+﻿using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
-namespace Model;
+namespace AnnualCurriculumMaker;
 
 public static class CurriculumConvert
 {
