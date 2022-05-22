@@ -148,6 +148,21 @@ internal static class AnnualCurriculumMakerControlExtention
         }
     }
 
+    internal static void SelectName(this DataGridView dataGridView, Curriculum curriculum, string name)
+    {
+        dataGridView.ClearSelection();
+        for (int row = 0; row < dataGridView.RowCount; row++)
+        {
+            for (int col = 0; col < dataGridView.ColumnCount; col++)
+            {
+                if (curriculum[col, row].Teachers.Any(t => t == name))
+                {
+                    dataGridView[col, row].Selected = true;
+                }
+            }
+        }
+    }
+
     private static void SetDataGridViewCell(this DataGridViewCell dataGridViewCell, CurriculumCell curriculumCell)
     {
         dataGridViewCell.Value = curriculumCell.Value;

@@ -204,4 +204,11 @@ public partial class Form1 : Form
 
         dataGridView1.SetColor(Curriculum, cd.Color);
     }
+
+    private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (listView1.SelectedItems.Count == 0) return;
+
+        dataGridView1.SelectName(Curriculum, listView1.SelectedItems[0].Text);
+    }
 }
