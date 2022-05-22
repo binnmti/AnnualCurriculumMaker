@@ -119,24 +119,26 @@ internal static class AnnualCurriculumMakerControlExtention
 
     internal static void Paste(this DataGridView dataGridView, Curriculum curriculum, Curriculum copyCurriculum)
     {
+        static CurriculumCell GetCell(CurriculumCell cell, CurriculumCell copyCell)
+        {
+            //タイトルだけそのまま使い、それ以外はコピーを使う
+            var lesson = new Lesson(copyCell.Lesson.Name, cell.Lesson.WeekTitle, cell.Lesson.QuarterTitle, cell.Lesson.YearTitle, cell.Lesson.PeriodTitle);
+            return new CurriculumCell(lesson, copyCell.Teachers, copyCell.TextColorValue);
+        }
+
         for (int row = 0; row < copyCurriculum.Rows; row++)
         {
             for (int col = 0; col < copyCurriculum.Cols; col++)
             {
                 var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols);
                 var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows);
-
-                var cell = curriculum[colIndex, rowIndex];
-                var copyCell = copyCurriculum[col, row];
-                //タイトルはそのままでそれ以外をコピー
-                var lesson = new Lesson(copyCell.Lesson.Name, cell.Lesson.WeekTitle, cell.Lesson.QuarterTitle, cell.Lesson.YearTitle, cell.Lesson.PeriodTitle);
-                var newCell = new CurriculumCell(lesson, copyCell.Teachers, copyCell.TextColorValue);
-                if (newCell.Teachers.Any(t => curriculum.IsExist(t, colIndex, rowIndex)))
+                var cell = GetCell(curriculum[colIndex, rowIndex], copyCurriculum[col, row]);
+                if (cell.Teachers.Any(t => curriculum.IsExist(t, colIndex, rowIndex)))
                 {
-                    MessageBox.Show($"{newCell.Value}が重複しています！");
+                    MessageBox.Show($"{cell.Value}が重複しています！");
                 }
-                curriculum[colIndex, rowIndex] = newCell;
-                dataGridView[colIndex, rowIndex].SetDataGridViewCell(newCell);
+                curriculum[colIndex, rowIndex] = cell;
+                dataGridView[colIndex, rowIndex].SetDataGridViewCell(cell);
             }
         }
     }
