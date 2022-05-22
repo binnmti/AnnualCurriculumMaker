@@ -152,7 +152,7 @@ public partial class Form1 : Form
 
     private void CutToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        CopyCurriculum = dataGridView1.Copy(Curriculum);
+        CopyCurriculum = dataGridView1.GetCopyCurriculum(Curriculum);
         dataGridView1.Cut(Curriculum);
         listView1.Update(Curriculum);
         PasteToolStripMenuItem.Enabled = true;
@@ -161,7 +161,7 @@ public partial class Form1 : Form
 
     private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        CopyCurriculum = dataGridView1.Copy(Curriculum);
+        CopyCurriculum = dataGridView1.GetCopyCurriculum(Curriculum);
         PasteToolStripMenuItem.Enabled = true;
         MatrixReplacePasteToolStripMenuItem.Enabled = true;
     }

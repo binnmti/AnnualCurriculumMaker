@@ -85,8 +85,9 @@ internal static class AnnualCurriculumMakerControlExtention
         }
     }
 
-    internal static Curriculum Copy(this DataGridView dataGridView, Curriculum curriculum)
+    internal static Curriculum GetCopyCurriculum(this DataGridView dataGridView, Curriculum curriculum)
     {
+        //選択した位置から最小になる矩形を作る
         int minRow = dataGridView.RowCount;
         int maxRow = 0;
         int minCol = dataGridView.ColumnCount;
@@ -104,6 +105,7 @@ internal static class AnnualCurriculumMakerControlExtention
                 }
             }
         }
+        //矩形のサイズのCurriculumを作る
         var copyCurriculum = new Curriculum(maxCol - minCol + 1, maxRow - minRow + 1);
         for (int row = 0; row < copyCurriculum.Rows; row++)
         {
