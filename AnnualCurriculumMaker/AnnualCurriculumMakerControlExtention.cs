@@ -123,7 +123,7 @@ internal static class AnnualCurriculumMakerControlExtention
             {
                 var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols);
                 var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows);
-                var value = curriculum[colIndex, rowIndex].Copy(copyCurriculum[col, row]).Value;
+                var value = curriculum[colIndex, rowIndex].GetCellOtherTitle(copyCurriculum[col, row]).Value;
                 dataGridView.Edit(colIndex, rowIndex, value, curriculum);
             }
         }

@@ -35,14 +35,11 @@ public class CurriculumCell
             return $"{Lesson.Name}\n{string.Join(',', Teachers)}";
         }
     }
-}
 
-public static class CurriculumCellConvert
-{
-    //TODO:Titleはコピらない。ただちょっと筋が悪い気がする。。。
-    public static CurriculumCell Copy(this CurriculumCell src, CurriculumCell dst)
+    public CurriculumCell GetCellOtherTitle(CurriculumCell newCell)
     {
-        var lesson = new Lesson(dst.Lesson.Name, src.Lesson.WeekTitle, src.Lesson.QuarterTitle, src.Lesson.YearTitle, src.Lesson.PeriodTitle);
-        return new CurriculumCell(lesson, dst.Teachers, dst.TextColorValue);
+        //Title系は今のまま、それ以外は渡された値を使う
+        var lesson = new Lesson(newCell.Lesson.Name, Lesson.WeekTitle, Lesson.QuarterTitle, Lesson.YearTitle, Lesson.PeriodTitle);
+        return new CurriculumCell(lesson, newCell.Teachers, newCell.TextColorValue);
     }
 }
