@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\AnnualCurriculumMaker.csproj" />
+    <ProjectReference Include="..\AnnualCurriculumMaker\AnnualCurriculumMaker.csproj" />
   </ItemGroup>
 
 </Project>
