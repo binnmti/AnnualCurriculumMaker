@@ -54,8 +54,32 @@ public partial class Form1 : Form
 
     private void LoadFile(string fileName)
     {
-        //TODO:csvロードも出来そう。
-        Curriculum = CurriculumConvert.ToCurriculum(File.ReadAllText(fileName));
+        if (Path.GetExtension(fileName) == ".csv")
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            var csv = File.ReadAllText(fileName, Encoding.GetEncoding("Shift_JIS"));
+
+            var colTitles = csv[..csv.IndexOf('\n')].Split(',');
+            var cols = colTitles.Length - 1;
+            int row = 0;
+            foreach (var line in csv.Split(',').Chunk(cols))
+            {
+                var col = 0;
+                foreach (var cell in line)
+                {
+                    if(row != 0 && col != 0)
+                    {
+                        dataGridView1.Edit(col - 1, row - 1, cell.Replace("\"",""), Curriculum);
+                    }
+                    col++;
+                }
+                row++;
+            }
+        }
+        else
+        {
+            Curriculum = CurriculumConvert.ToCurriculumForXml(File.ReadAllText(fileName));
+        }
         dataGridView1.Load(Curriculum);
         listView1.Update(Curriculum);
         FileName = fileName;
@@ -142,9 +166,10 @@ public partial class Form1 : Form
         DeleteToolStripMenuItem.Enabled = true;
 
         var value = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+        value = value.Replace("　", " ");
         if (CellBeginText == value) return;
-        //,の時は自動改行
-        if (value.Contains(',')) value = $"{value[..value.IndexOf(',')]}\n{value[(value.IndexOf(',') + 1)..]}";
+        // の時は自動改行
+        if (value.Contains(' ')) value = $"{value[..value.IndexOf(' ')]}\n{value[(value.IndexOf(' ') + 1)..]}";
 
         dataGridView1.Edit(e.ColumnIndex, e.RowIndex, value, Curriculum);
         listView1.Update(Curriculum);

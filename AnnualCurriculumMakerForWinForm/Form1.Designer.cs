@@ -92,9 +92,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(573, 25);
+            this.label1.Size = new System.Drawing.Size(329, 25);
             this.label1.TabIndex = 1;
-            this.label1.Text = "操作説明:Shift+改行で複数行編集。授業と先生の間を,で区切ると自動改行";
+            this.label1.Text = "授業と先生の間を空白で区切ると自動改行";
             // 
             // listView1
             // 
@@ -284,7 +284,7 @@
             // 
             this.openFileDialog1.DefaultExt = "xml";
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "xmlファイル|*.xml";
+            this.openFileDialog1.Filter = "xmlファイル|*.xml|csvファイル|*.csv";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // saveFileDialog1

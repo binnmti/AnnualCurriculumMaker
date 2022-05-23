@@ -52,7 +52,7 @@ public static class CurriculumConvert
     public static string ToJson(this Curriculum curriculum, bool indent)
         => JsonSerializer.Serialize(curriculum, new JsonSerializerOptions { WriteIndented = indent, Encoder = JavaScriptEncoder.Create(UnicodeRanges.All) });
 
-    public static Curriculum ToCurriculum(string json)
+    public static Curriculum ToCurriculumForXml(string json)
         => JsonSerializer.Deserialize<Curriculum>(json) ?? new Curriculum(0, 0, new List<string>(), new List<string>(), new List<string>(), new List<string>());
 
     public static IEnumerable<Teacher> ToTeachers(this Curriculum curriculum)
@@ -87,7 +87,7 @@ public static class CurriculumConvert
         {
             var words = cell.Split('\n');
             lesson = words[0];
-            teachers = words[1].Split(',').ToList();
+            teachers = words[1].Split(' ').ToList();
             curriculumCell = new CurriculumCell(new Lesson(lesson, weekTitle, quarterTitle, yearTitle, periodTitle), teachers, 0);
             return !teachers.Any(t => curriculum.IsExist(t, col, row));
         }

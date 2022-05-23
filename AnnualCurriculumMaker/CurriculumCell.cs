@@ -32,7 +32,7 @@ public class CurriculumCell
         {
             if (Lesson.Name == "") return "";
             if (Teachers.Count == 0) return Lesson.Name;
-            return $"{Lesson.Name}\n{string.Join(',', Teachers)}";
+            return $"{Lesson.Name}\n{string.Join(' ', Teachers)}";
         }
     }
 }

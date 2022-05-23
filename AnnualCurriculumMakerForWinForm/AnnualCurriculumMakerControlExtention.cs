@@ -130,8 +130,8 @@ internal static class AnnualCurriculumMakerControlExtention
         {
             for (int col = 0; col < copyCurriculum.Cols; col++)
             {
-                var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols);
-                var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows);
+                var colIndex = Math.Min(dataGridView.SelectedCells[0].ColumnIndex + col, curriculum.Cols - 1);
+                var rowIndex = Math.Min(dataGridView.SelectedCells[0].RowIndex + row, curriculum.Rows - 1);
                 var cell = GetCell(curriculum[colIndex, rowIndex], copyCurriculum[col, row]);
                 if (cell.Teachers.Any(t => curriculum.IsExist(t, colIndex, rowIndex)))
                 {
