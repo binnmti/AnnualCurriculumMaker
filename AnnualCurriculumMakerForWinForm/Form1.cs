@@ -45,11 +45,10 @@ public partial class Form1 : Form
         else
         {
             File.WriteAllText(fileName, Curriculum.ToJson(true));
+            FileName = fileName;
+            JsonString = Curriculum.ToJson(false);
+            Text = GetTitle();
         }
-
-        FileName = fileName;
-        JsonString = Curriculum.ToJson(false);
-        Text = GetTitle();
     }
 
     private void LoadFile(string fileName)
@@ -58,23 +57,7 @@ public partial class Form1 : Form
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var csv = File.ReadAllText(fileName, Encoding.GetEncoding("Shift_JIS"));
-
-            var colTitles = csv[..csv.IndexOf('\n')].Split(',');
-            var cols = colTitles.Length - 1;
-            int row = 0;
-            foreach (var line in csv.Split(',').Chunk(cols))
-            {
-                var col = 0;
-                foreach (var cell in line)
-                {
-                    if(row != 0 && col != 0)
-                    {
-                        dataGridView1.Edit(col - 1, row - 1, cell.Replace("\"",""), Curriculum);
-                    }
-                    col++;
-                }
-                row++;
-            }
+            dataGridView1.LoadCsv(Curriculum, csv);
         }
         else
         {
@@ -235,5 +218,15 @@ public partial class Form1 : Form
         if (listView1.SelectedItems.Count == 0) return;
 
         dataGridView1.SelectName(Curriculum, listView1.SelectedItems[0].Text);
+    }
+
+    private void CsvExportToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        saveFileDialog2.ShowDialog();
+    }
+
+    private void saveFileDialog2_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        SaveFile(saveFileDialog2.FileName);
     }
 }

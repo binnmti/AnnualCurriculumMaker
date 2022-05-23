@@ -41,7 +41,8 @@
             this.OpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NameSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.CsvExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.編集EToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +57,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -157,7 +159,8 @@
             this.OpenToolStripMenuItem,
             this.SaveToolStripMenuItem,
             this.NameSaveToolStripMenuItem,
-            this.toolStripSeparator1,
+            this.CsvExportToolStripMenuItem,
+            this.ExportToolStripSeparator,
             this.ExitToolStripMenuItem});
             this.ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
             this.ファイルFToolStripMenuItem.Size = new System.Drawing.Size(98, 29);
@@ -167,7 +170,7 @@
             // 
             this.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
             this.OpenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.OpenToolStripMenuItem.Text = "開く(&O)";
             this.OpenToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
@@ -175,26 +178,33 @@
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
             this.SaveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.SaveToolStripMenuItem.Text = "保存(&S)";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // NameSaveToolStripMenuItem
             // 
             this.NameSaveToolStripMenuItem.Name = "NameSaveToolStripMenuItem";
-            this.NameSaveToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.NameSaveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.NameSaveToolStripMenuItem.Text = "名前を付けて保存(&A)";
             this.NameSaveToolStripMenuItem.Click += new System.EventHandler(this.NameSaveToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // CsvExportToolStripMenuItem
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(264, 6);
+            this.CsvExportToolStripMenuItem.Name = "CsvExportToolStripMenuItem";
+            this.CsvExportToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.CsvExportToolStripMenuItem.Text = "エクスポート(&E)";
+            this.CsvExportToolStripMenuItem.Click += new System.EventHandler(this.CsvExportToolStripMenuItem_Click);
+            // 
+            // ExportToolStripSeparator
+            // 
+            this.ExportToolStripSeparator.Name = "ExportToolStripSeparator";
+            this.ExportToolStripSeparator.Size = new System.Drawing.Size(267, 6);
             // 
             // ExitToolStripMenuItem
             // 
             this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
-            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(267, 34);
+            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.ExitToolStripMenuItem.Text = "終了(&X)";
             this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -284,14 +294,20 @@
             // 
             this.openFileDialog1.DefaultExt = "xml";
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "xmlファイル|*.xml|csvファイル|*.csv";
+            this.openFileDialog1.Filter = "xmlファイル|*.xml";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "xml";
-            this.saveFileDialog1.Filter = "xmlファイル|*.xml|csvファイル|*.csv";
+            this.saveFileDialog1.Filter = "xmlファイル|*.xml";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // saveFileDialog2
+            // 
+            this.saveFileDialog2.DefaultExt = "xml";
+            this.saveFileDialog2.Filter = "csvファイル|*.csv";
+            this.saveFileDialog2.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog2_FileOk);
             // 
             // Form1
             // 
@@ -331,7 +347,7 @@
         private ToolStripMenuItem NameSaveToolStripMenuItem;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
-        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator ExportToolStripSeparator;
         private ToolStripMenuItem ExitToolStripMenuItem;
         private ToolStripMenuItem 編集EToolStripMenuItem;
         private ToolStripMenuItem DeleteToolStripMenuItem;
@@ -346,5 +362,7 @@
         private ColorDialog colorDialog1;
         private ToolStripMenuItem 貼り付けのオプションToolStripMenuItem;
         private ToolStripMenuItem MatrixReplacePasteToolStripMenuItem;
+        private SaveFileDialog saveFileDialog2;
+        private ToolStripMenuItem CsvExportToolStripMenuItem;
     }
 }

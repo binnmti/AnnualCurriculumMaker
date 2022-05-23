@@ -61,6 +61,26 @@ internal static class AnnualCurriculumMakerControlExtention
         return new Curriculum(dataGridView.ColumnCount, dataGridView.RowCount, weekTitles, quarterTitles, yearTitles, periodTitles);
     }
 
+    internal static void LoadCsv(this DataGridView dataGridView, Curriculum curriculum, string csv)
+    {
+        var colTitles = csv[..csv.IndexOf('\n')].Split(',');
+        var cols = colTitles.Length - 1;
+        int row = 0;
+        foreach (var line in csv.Split(',').Chunk(cols))
+        {
+            var col = 0;
+            foreach (var cell in line)
+            {
+                if (row != 0 && col != 0)
+                {
+                    dataGridView.Edit(col - 1, row - 1, cell.Replace("\"", ""), curriculum);
+                }
+                col++;
+            }
+            row++;
+        }
+    }
+
     internal static void Load(this DataGridView dataGridView, Curriculum curriculum)
     {
         for (int row = 0; row < curriculum.Rows; row++)

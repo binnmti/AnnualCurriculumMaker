@@ -46,6 +46,13 @@ public static class CurriculumConvert
             }
             csv.AppendLine();
         }
+        csv.AppendLine();
+        var teachers = curriculum.ToTeachers();
+        foreach(var teacher in teachers)
+        {
+            csv.Append($"{teacher.Name},{teacher.Frame},{teacher.Lesson},");
+            csv.AppendLine();
+        }
         return csv.ToString();
     }
 

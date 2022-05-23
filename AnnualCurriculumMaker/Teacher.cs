@@ -25,8 +25,8 @@ public class Teacher
     {
         get
         {
-            var text = Lessons.GroupBy(x => x.QuarterTitle).Select(q => $"{q.Key}:{q.Count()}");
-            return $"{string.Join(',', text)},合計:{Lessons.Count}";
+            var text = new List<string>() { "1Q", "2Q", "3Q", "4Q" }.Select(q => $"{q}:{Lessons.Count(x => x.QuarterTitle == q):D2}");
+            return $"{string.Join(',', text)},合計:{Lessons.Count:D2}";
         }
     }
 }
