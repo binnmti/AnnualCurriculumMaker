@@ -32,7 +32,23 @@ public class CurriculumCell
         {
             if (Lesson.Name == "") return "";
             if (Teachers.Count == 0) return Lesson.Name;
-            return $"{Lesson.Name}\n{string.Join(' ', Teachers)}";
+            var teacher = "";
+            for(int i = 0; i < Teachers.Count; i++)
+            {
+                if (i == Teachers.Count - 1)
+                {
+                    teacher += Teachers[i];
+                }
+                else if (i % 3 == 2)
+                {
+                    teacher += Teachers[i] + "\n";
+                }
+                else
+                {
+                    teacher += Teachers[i] + ",";
+                }
+            }
+            return $"{Lesson.Name}\n{teacher}";
         }
     }
 }
