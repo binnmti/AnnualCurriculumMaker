@@ -139,6 +139,7 @@ public partial class Form1 : Form
         DeleteToolStripMenuItem.Enabled = false;
 
         CellBeginText = dataGridView1[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+        dataGridView1[e.ColumnIndex, e.RowIndex].Value = CellBeginText.Replace("\n", " ");
     }
 
     private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -228,5 +229,17 @@ public partial class Form1 : Form
     private void saveFileDialog2_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
     {
         SaveFile(saveFileDialog2.FileName);
+    }
+
+    private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+    {
+        if (dataGridView1.SelectedCells.Count != 1)
+        {
+            textBox1.Text = "";
+        }
+        else
+        {
+            textBox1.Text = Curriculum[dataGridView1.SelectedCells[0].ColumnIndex, dataGridView1.SelectedCells[0].RowIndex].Value;
+        }
     }
 }

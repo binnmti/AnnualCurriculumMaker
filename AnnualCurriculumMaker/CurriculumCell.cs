@@ -45,7 +45,7 @@ public class CurriculumCell
                 }
                 else
                 {
-                    teacher += Teachers[i] + ",";
+                    teacher += Teachers[i] + " ";
                 }
             }
             return $"{Lesson.Name}\n{teacher}";
